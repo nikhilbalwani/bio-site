@@ -58,7 +58,7 @@ function RenderAuthors(entry, result)
         result.push(realpeople[0]);
         if (etal)
         {
-            result.push(', et&nbsp;al.');
+            result.push(' et&nbsp;al.');
         }
     }
     else if (etal)
@@ -66,11 +66,18 @@ function RenderAuthors(entry, result)
         result.push(realpeople.join(', '));
         result.push(', et&nbsp;al.');
     }
+    else if (realpeople.length === 2)
+    {
+        result.push(realpeople[0]);
+        result.push(' and ');
+        result.push(realpeople[1]);
+    }
     else
     {
-        result.push(realpeople.slice(0, realpeople.length - 1).join(', '));
+        const lastPerson = realpeople.pop();
+        result.push(realpeople.join(', '));
         result.push(', and ');
-        result.push(realpeople[realpeople.length - 1]);
+        result.push(lastPerson);
     }
     result.push('</div>\n');
 }
