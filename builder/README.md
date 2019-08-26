@@ -1,6 +1,6 @@
 <figure class="gl-page-background gl-float-right" style="text-align: center;"><img src="/assets/images/hero-image.jpg" alt="A photo of Ji Luo" style="max-width: 160px;" /></figure>
 
-I am a second-year Ph.D. student in computer science, advised by [Rachel (Huijia) Lin](https://homes.cs.washington.edu/~rachel/) and [Stefano Tessaro](https://homes.cs.washington.edu/~tessaro/). My primary research interest is cryprography and I’m also interested in security and computational complexity.
+I am a second-year Ph.D. student in computer science, advised by [Rachel (Huijia) Lin](https://homes.cs.washington.edu/~rachel/) and [Stefano Tessaro](https://homes.cs.washington.edu/~tessaro/). My primary research interest is cryptography and I’m also interested in security and computational complexity.
 
 Prior to joining [Paul G. Allen School of Computer Science and Engineering](https://www.cs.washington.edu/) at the University of Washington, I was a Ph.D. student at [University of California, Santa Barbara](https://cs.ucsb.edu/) for a quarter. I obtained my bachelor’s degree from [Tsinghua University](https://www.tsinghua.edu.cn/publish/thu2018en/index.html), where I attended [Yao class](http://iiis.tsinghua.edu.cn/en/).
 
@@ -44,9 +44,9 @@ pages="530--560",
 abstract="We introduce a new technique that allows to give a zero-knowledge proof that a committed vector has Hamming weight bounded by a given constant. The proof has unconditional soundness and is very compact: It has size independent of the length of the committed string, and for large fields, it has size corresponding to a constant number of commitments. We show five applications of the technique that play on a common theme, namely that our proof allows us to get malicious security at small overhead compared to semi-honest security: (1) actively secure k-out-of-n OT from black-box use of 1-out-of-2 OT, (2) separable accountable ring signatures, (3) more efficient preprocessing for the TinyTable secure two-party computation protocol, (4) mixing with public verifiability, and (5) PIR with security against a malicious client.",
 isbn="978-3-319-76581-5",
 
-glBIOinfo={PKC 2018},
-glBIOurl={https://link.springer.com/chapter/10.1007/978-3-319-76581-5_18},
-glBIOeprint={https://eprint.iacr.org/2017/1041},
+biosite_info={PKC 2018},
+biosite_url={https://link.springer.com/chapter/10.1007/978-3-319-76581-5_18},
+biosite_eprint={2017/1041},
 }
 
 ```
@@ -73,7 +73,7 @@ glBIOeprint={https://eprint.iacr.org/2017/1041},
   biburl    = {https://dblp.org/rec/bib/journals/corr/abs-1902-05020},
   bibsource = {dblp computer science bibliography, https://dblp.org},
 
-  glBIOarXiv = {https://arxiv.org/abs/1902.05020},
+  biosite_arXiv = {1902.05020},
 }
 
 ```

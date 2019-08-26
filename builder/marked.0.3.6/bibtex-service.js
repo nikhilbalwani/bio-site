@@ -16,18 +16,15 @@ function field(entry, field)
 
 function RenderTitle(entry, result)
 {
-    const url = field(entry, 'glbiourl').Raw;
+    const url = field(entry, 'biosite_url').Raw;
+    result.push('<div class="gl-bibtex-entry-title"><span class="gl-bibtex-entry-bullet" aria-label="bullet symbol">&#8226; </span><a');
     if (url)
     {
-        result.push('<div class="gl-bibtex-entry-title"><a href="',
-            Utils.HtmlEncode(url), '">',
-            Utils.TeX2Html(false, field(entry, 'title').Raw),
-            '</a></div>\n');
-        return;
+        result.push(' href="', Utils.HtmlEncode(url), '"');
     }
-    result.push('<div class="gl-bibtex-entry-title">',
+    result.push('>',
         Utils.TeX2Html(false, field(entry, 'title').Raw),
-        '</div>\n');
+        '</a></div>\n');
 }
 
 const AuthorFormat = BibTeX.ParsePersonNameFormat('{ff }{vv~}{ll}{, jj}');
@@ -79,24 +76,36 @@ function RenderAuthors(entry, result)
 }
 
 const ExtrasLinks = [
-    { field: 'glbioeprint', name: 'ePrint' },
-    { field: 'glbioarxiv', name: 'arXiv' },
+{
+    field: 'eprint',
+    name: 'ePrint',
+    href1html: 'https://eprint.iacr.org/',
+    href2html: ''
+},
+{
+    field: 'arxiv',
+    name: 'arXiv',
+    href1html: 'https://arxiv.org/abs/',
+    href2html: '',
+    arialabel: 'archive'
+},
 ];
 function RenderExtras(entry, result)
 {
     result.push('<div class="gl-bibtex-entry-extras">');
     let first = true;
-    const glBIOinfo = field(entry, 'glbioinfo').Raw;
-    if (glBIOinfo)
+    const info = field(entry, 'biosite_info').Raw;
+    if (info)
     {
         result.push('<span class="gl-bibtex-entry-extras-info">',
-            Utils.TeX2Html(false, glBIOinfo),
+            Utils.TeX2Html(false, info),
             '</span>');
         first = false;
     }
     for (const item of ExtrasLinks)
     {
-        const value = field(entry, item.field).Raw;
+        const value = Utils.HtmlEncode(
+            field(entry, 'biosite_' + item.field).Raw);
         if (!value)
         {
             continue;
@@ -109,10 +118,18 @@ function RenderExtras(entry, result)
         {
             first = false;
         }
-        result.push('<a class="gl-bibtex-entry-extras-link" href="',
-            Utils.HtmlEncode(value), '">',
+        result.push('<span class="gl-bibtex-entry-extras-',
+            item.field, '" data-value="', value,
+            '"><a href="',
+            item.href1html, value, item.href2html,
+            '"');
+        if (item.arialabel)
+        {
+            result.push(' aria-label="', item.arialabel, '"');
+        }
+        result.push('>',
             Utils.TeX2Html(false, item.name),
-            '</a>');
+            '</a></span>');
     }
     if (!first)
     {

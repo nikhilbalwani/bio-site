@@ -45,9 +45,33 @@
     font-weight: bold;
 }
 
+.gl-bibtex-entry-title,
+.gl-bibtex-entry-authors,
+.gl-bibtex-entry-extras
+{
+    padding-left: 1em;
+}
+
+.gl-bibtex-entry-bullet
+{
+    width: 1em;
+    margin-left: -1em;
+    display: inline-block;
+    text-align: left;
+}
+
 .gl-bibtex-entry-extras-info
 {
     font-weight: bold;
+}
+
+@media print
+{
+    .gl-bibtex-entry-extras-eprint::after,
+    .gl-bibtex-entry-extras-arxiv::after
+    {
+        content: " (" attr(data-value) ")";
+    }
 }
 
 /* Default font: sffamily, mdseries, upshape.

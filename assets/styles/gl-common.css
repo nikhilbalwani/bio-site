@@ -958,7 +958,7 @@ body.gl-targeted-animation *:target
     }
 }
 
-@media not all and (min-width: 720px)
+@media not all and (min-width: 500px)
 {
     .gl-wide-only
     {
@@ -966,7 +966,7 @@ body.gl-targeted-animation *:target
     }
 }
 
-@media all and (min-width: 720px)
+@media all and (min-width: 500px)
 {
     html, body
     {
