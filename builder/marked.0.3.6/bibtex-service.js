@@ -20,7 +20,7 @@ function RenderTitle(entry, result)
     result.push('<div class="gl-bibtex-entry-title"><span class="gl-bibtex-entry-bullet" aria-label="bullet symbol">&#8226; </span><a');
     if (url)
     {
-        result.push(' href="', Utils.HtmlEncode(url), '"');
+        result.push(' href="', Utils.HtmlEncode(url), '" rel="nofollow"');
     }
     result.push('>',
         Utils.TeX2Html(false, field(entry, 'title').Raw),
@@ -77,17 +77,17 @@ function RenderAuthors(entry, result)
 
 const ExtrasLinks = [
 {
-    field: 'eprint',
-    name: 'ePrint',
-    href1html: 'https://eprint.iacr.org/',
-    href2html: ''
-},
-{
     field: 'arxiv',
     name: 'arXiv',
     href1html: 'https://arxiv.org/abs/',
     href2html: '',
     arialabel: 'archive'
+},
+{
+    field: 'eprint',
+    name: 'ePrint',
+    href1html: 'https://eprint.iacr.org/',
+    href2html: ''
 },
 ];
 function RenderExtras(entry, result)
@@ -122,7 +122,7 @@ function RenderExtras(entry, result)
             item.field, '" data-value="', value,
             '"><a href="',
             item.href1html, value, item.href2html,
-            '"');
+            '" rel="nofollow"');
         if (item.arialabel)
         {
             result.push(' aria-label="', item.arialabel, '"');
@@ -154,7 +154,8 @@ function RenderDatabase(parsed)
     }
     for (const entry of parsed.Entries)
     {
-        result.push('<div class="', className, '">\n');
+        result.push('<div class="', className, '" id="bibitem_',
+            entry.Id, '">\n');
         RenderTitle(entry, result);
         RenderAuthors(entry, result);
         RenderExtras(entry, result);

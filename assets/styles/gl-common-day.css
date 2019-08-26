@@ -84,6 +84,11 @@ nav.gl-nav > a:not([href]) { background-color: rgba(0, 0, 0, 0.5); }
     border: transparent 1px solid;
 }
 
+.gl-entry footer
+{
+    color: #555;
+}
+
 @media screen
 {
     html:not([gl-theme="dark"]) .gl-entry .gl-light-theme-forbidden { display: none !important; }

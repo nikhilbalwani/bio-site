@@ -773,6 +773,16 @@ Renderer.prototype.code = function(code, lang, escaped) {
       + (escaped ? code : escape(code, true))
       + '\n</samp></pre>\n';
   }
+  if (lang === 'bio-remove')
+  {
+    return '';
+  }
+  if (lang === 'bio-meta')
+  {
+    return '<!--[bio][meta]' +
+      (escaped ? unescape(code) : code) +
+      '[bio]-->';
+  }
   if (lang === 'blog-bib')
   {
     return GL_BibTeX.Handler(escaped ? unescape(code) : code);
@@ -793,6 +803,10 @@ Renderer.prototype.html = function(html) {
 };
 
 Renderer.prototype.heading = function(text, level, raw) {
+  if (level === 1)
+  {
+    return '<!--[bio][set-headline]' + raw + '[bio]-->';
+  }
   var tryId = /#([A-Za-z][A-Za-z0-9_-]*)\s*$/.exec(text);
   if (tryId)
   {
@@ -973,6 +987,7 @@ const linkHandler = function(href, title, text) {
   if (title) {
     out += ' title="' + title + '"';
   }
+  /* This is disabled for CV site. */
   if (false && targetBlank)
   {
     out += ' target="_blank"';

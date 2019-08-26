@@ -87,7 +87,7 @@ function RenderKaTeX(part, isDisplay)
 };
 
 const fs = require('fs');
-const READMEmd = path.join(repo, 'builder', 'README.md');
+const READMEmd = path.join(repo, 'README.md');
 const content = fs.readFileSync(READMEmd, 'utf8');
 const rendered = marked(content);
 
@@ -115,20 +115,72 @@ const dateModifiedLong = (function (now)
         now.getUTCFullYear();
 })(now);
 
-const indexhtml = fs.readFileSync(
+let indexhtml = fs.readFileSync(
     path.join(repo, 'builder', 'template.html'),
-    'utf8').
-replace(/<!--\[bio\]\[body\]([\u0000-\uffff]*?)\[bio\]-->/g,
-    rendered).
-replace(/<!--\[bio\]\[date-modified\]([\u0000-\uffff]*?)\[bio\]-->/g,
-    dateModified).
-replace(/<!--\[bio\]\[date-modified-long\]([\u0000-\uffff]*?)\[bio\]-->/g,
-    dateModifiedLong).
-replace(/<!--\[blog\]\[katex(-display)?\]([\u0000-\uffff]*?)\[blog\]-->/g,
+    'utf8');
+indexhtml = indexhtml.replace(/\r\n|\r|\n/g, '\n');
+indexhtml = indexhtml.replace(/\n[ \t\v\f\n]*\n/g, '\n');
+indexhtml = indexhtml.replace(
+    /<!--\[bio\]\[body\]([\u0000-\uffff]*?)\[bio\]-->/g,
+    rendered);
+
+let meta = undefined;
+indexhtml = indexhtml.replace(
+    /<!--\[bio\]\[meta\]([\u0000-\uffff]*?)\[bio\]-->/g,
+    function (match, metastring)
+    {
+        meta = JSON.parse(metastring);
+        return '';
+    });
+indexhtml = indexhtml.replace(
+    /<!--\[bio\]\[date-modified\]([\u0000-\uffff]*?)\[bio\]-->/g,
+    dateModified);
+indexhtml = indexhtml.replace(
+    /<!--\[bio\]\[date-modified-long\]([\u0000-\uffff]*?)\[bio\]-->/g,
+    dateModifiedLong);
+indexhtml = indexhtml.replace(
+    /<!--\[bio\]\[name\]([\u0000-\uffff]*?)\[bio\]-->/g,
+    meta.name);
+indexhtml = indexhtml.replace(
+    /<!--\[bio\]\[title\]([\u0000-\uffff]*?)\[bio\]-->/g,
+    meta.title);
+indexhtml = indexhtml.replace(
+    /<!--\[bio\]\[description\]([\u0000-\uffff]*?)\[bio\]-->/g,
+    meta.description);
+indexhtml = indexhtml.replace(
+    /<!--\[bio\]\[domain\]([\u0000-\uffff]*?)\[bio\]-->/g,
+    meta.domain);
+indexhtml = indexhtml.replace(
+    /<!--\[bio\]\[date-created\]([\u0000-\uffff]*?)\[bio\]-->/g,
+    meta['date-created']);
+indexhtml = indexhtml.replace(
+    /<!--\[bio\]\[repo\]([\u0000-\uffff]*?)\[bio\]-->/g,
+    meta.repo);
+
+let headline = undefined;
+indexhtml = indexhtml.replace(
+    /<!--\[bio\]\[set-headline\]([\u0000-\uffff]*?)\[bio\]-->/g,
+    function (match, headlinestring)
+    {
+        headline = headlinestring;
+        return '';
+    });
+indexhtml = indexhtml.replace(
+    /<!--\[bio\]\[get-headline\]([\u0000-\uffff]*?)\[bio\]-->/g,
+    headline);
+
+indexhtml = indexhtml.replace(
+    /<!--\[blog\]\[katex(-display)?\]([\u0000-\uffff]*?)\[blog\]-->/g,
     function (match, display, part)
     {
         return RenderKaTeX(part, !!display);
     });
+indexhtml = indexhtml.replace(
+    /<!--\[bio\]\[protect\][ \t\v\f\n]*([\u0000-\uffff]*?)[ \t\v\f\n]*\[bio\]-->/g,
+    '$1');
+indexhtml = indexhtml.replace(
+    /<!--\[bio\]\[remove\]([\u0000-\uffff]*?)\[bio\]-->/g,
+    '');
 
 fs.writeFileSync(
     path.join(repo, 'index.html'),
