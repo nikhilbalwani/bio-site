@@ -185,3 +185,11 @@ indexhtml = indexhtml.replace(
 fs.writeFileSync(
     path.join(repo, 'index.html'),
     indexhtml);
+
+fs.writeFileSync(
+    path.join(repo, '404.html'),
+    fs.readFileSync(path.join(repo, 'builder', '404.template.html'), 'utf8').
+    replace(/\r\n|\r|\n/g, '\n').
+    replace(/\n[ \t\v\f\n]*\n/g, '\n').
+    replace(/<!--\[bio\]\[domain\]([\u0000-\uffff]*?)\[bio\]-->/g, meta.domain)
+);

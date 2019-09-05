@@ -8,6 +8,7 @@
 | `/apple-touch-icon.png` | ARR |
 | `/CNAME` | ARR |
 | `/index.html` | ARR |
+| `/404.html` | ARR |
 | `/builder/katex.0.10.1` | MIT per [KaTeX](https://github.com/KaTeX/KaTeX/tree/v0.10.1) |
 | `/builder/marked.0.3.6/marked.js` | MIT per [marked](https://github.com/markedjs/marked/tree/v0.3.6) |
 | `/builder/marked.0.3.6/bibtex.js` | MIT per [BibTeX-TS](https://github.com/GeeLaw/bibtex-ts/commit/daf5b6666d490d4a141124389578b557500e3f8a) |
