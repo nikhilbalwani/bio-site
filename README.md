@@ -28,7 +28,7 @@ NOTE that this README.md is not licensed under the MIT license. You can use this
 
 <figure class="gl-page-background gl-float-right" style="text-align: center;"><img src="/assets/images/hero-image.jpg" alt="A photo of Ji Luo" width="160" height="160" style="max-width: 160px;" /></figure>
 
-I am a second-year Ph.D. student in computer science, advised by [Rachel (Huijia) Lin](https://homes.cs.washington.edu/~rachel/) and [Stefano Tessaro](https://homes.cs.washington.edu/~tessaro/). My primary research interest is cryptography and I’m also interested in security and computational complexity.
+I’m a second-year Ph.D. student in computer science, advised by [Huijia (Rachel) Lin](https://homes.cs.washington.edu/~rachel/) and [Stefano Tessaro](https://homes.cs.washington.edu/~tessaro/). My primary research interest is cryptography and I’m also interested in security and computational complexity.
 
 Prior to joining [Paul G. Allen School of Computer Science and Engineering](https://www.cs.washington.edu/) at the University of Washington, I was a Ph.D. student at [University of California, Santa Barbara](https://cs.ucsb.edu/) for a quarter. I obtained my bachelor’s degree from [Tsinghua University](https://www.tsinghua.edu.cn/publish/thu2018en/index.html), where I attended [Yao class](http://iiis.tsinghua.edu.cn/en/).
 
@@ -57,26 +57,27 @@ tgt.removeAttribute('class');
 
 ```blog-bib
 
-@InProceedings{ilo18-zkp-hw,
-author="Damg{\aa}rd, Ivan
-and Luo, Ji
-and Oechsner, Sabine
-and Scholl, Peter
-and Simkin, Mark",
-editor="Abdalla, Michel
-and Dahab, Ricardo",
-title="Compact Zero-Knowledge Proofs of Small Hamming Weight",
-booktitle="Public-Key Cryptography -- PKC 2018",
-year="2018",
-publisher="Springer International Publishing",
-address="Cham",
-pages="530--560",
-abstract="We introduce a new technique that allows to give a zero-knowledge proof that a committed vector has Hamming weight bounded by a given constant. The proof has unconditional soundness and is very compact: It has size independent of the length of the committed string, and for large fields, it has size corresponding to a constant number of commitments. We show five applications of the technique that play on a common theme, namely that our proof allows us to get malicious security at small overhead compared to semi-honest security: (1) actively secure k-out-of-n OT from black-box use of 1-out-of-2 OT, (2) separable accountable ring signatures, (3) more efficient preprocessing for the TinyTable secure two-party computation protocol, (4) mixing with public verifiability, and (5) PIR with security against a malicious client.",
-isbn="978-3-319-76581-5",
+@InProceedings{PKC:DLOSS18,
+  author =       "Ivan Damg{\r a}rd and
+                  Ji Luo and
+                  Sabine Oechsner and
+                  Peter Scholl and
+                  Mark Simkin",
+  title =        "Compact Zero-Knowledge Proofs of Small Hamming Weight",
+  pages =        "530--560",
+  editor =       pkc18ed,
+  booktitle =    pkc18name2,
+  volume =       pkc18vol2,
+  address =      pkc18addr,
+  month =        pkc18month,
+  publisher =    pkcpub,
+  series =       mylncs,
+  year =         2018,
+  doi =          "10.1007/978-3-319-76581-5_18",
 
-biosite_info={PKC 2018},
-biosite_url={https://link.springer.com/chapter/10.1007/978-3-319-76581-5_18},
-biosite_eprint={2017/1041},
+  biosite_url={https://link.springer.com/chapter/10.1007/978-3-319-76581-5_18},
+  biosite_venue={PKC 2018},
+  biosite_eprint={2017/1041},
 }
 
 ```
@@ -85,7 +86,7 @@ biosite_eprint={2017/1041},
 
 ```blog-bib
 
-@article{llz19-vtn,
+@article{ARXIV:LLZCX19,
   author    = {Ting Fung Lau and
                Ji Luo and
                Shengyu Zhao and
@@ -103,7 +104,7 @@ biosite_eprint={2017/1041},
   biburl    = {https://dblp.org/rec/bib/journals/corr/abs-1902-05020},
   bibsource = {dblp computer science bibliography, https://dblp.org},
 
-  biosite_arXiv = {1902.05020},
+  biosite_arxiv = {1902.05020},
 }
 
 ```

@@ -47,7 +47,8 @@
 
 .gl-bibtex-entry-title,
 .gl-bibtex-entry-authors,
-.gl-bibtex-entry-extras
+.gl-bibtex-entry-info,
+.gl-bibtex-entry-extra
 {
     padding-left: 1em;
 }
@@ -60,15 +61,15 @@
     text-align: left;
 }
 
-.gl-bibtex-entry-extras-info
+.gl-bibtex-entry-venue
 {
     font-weight: bold;
 }
 
 @media print
 {
-    .gl-bibtex-entry-extras-eprint::after,
-    .gl-bibtex-entry-extras-arxiv::after
+    .gl-bibtex-entry-eprint::after,
+    .gl-bibtex-entry-arxiv::after
     {
         content: " (" attr(data-value) ")";
     }

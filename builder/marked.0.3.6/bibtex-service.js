@@ -82,7 +82,7 @@ function RenderAuthors(entry, result)
     result.push('</div>\n');
 }
 
-const ExtrasLinks = [
+const InfoLinks = [
 {
     field: 'arxiv',
     name: 'arXiv',
@@ -94,22 +94,30 @@ const ExtrasLinks = [
     field: 'eprint',
     name: 'ePrint',
     href1html: 'https://eprint.iacr.org/',
-    href2html: ''
+    href2html: '',
+    arialabel: 'e-Print'
+},
+{
+    field: 'jcryptol',
+    name: 'J.&nbsp;Cryptol',
+    href1html: 'https://link.springer.com/article/10.1007/',
+    href2html: '',
+    arialabel: 'Journal of Cryptology'
 },
 ];
-function RenderExtras(entry, result)
+function RenderInfo(entry, result)
 {
-    result.push('<div class="gl-bibtex-entry-extras">');
+    result.push('<div class="gl-bibtex-entry-info">');
     let first = true;
-    const info = field(entry, 'biosite_info').Raw;
-    if (info)
+    const venue = field(entry, 'biosite_venue').Raw;
+    if (venue)
     {
-        result.push('<span class="gl-bibtex-entry-extras-info">',
-            Utils.TeX2Html(false, info),
+        result.push('<span class="gl-bibtex-entry-venue">',
+            Utils.TeX2Html(false, venue),
             '</span>');
         first = false;
     }
-    for (const item of ExtrasLinks)
+    for (const item of InfoLinks)
     {
         const value = Utils.HtmlEncode(
             field(entry, 'biosite_' + item.field).Raw);
@@ -125,7 +133,7 @@ function RenderExtras(entry, result)
         {
             first = false;
         }
-        result.push('<span class="gl-bibtex-entry-extras-',
+        result.push('<span class="gl-bibtex-entry-',
             item.field, '" data-value="', value,
             '"><a href="',
             item.href1html, value, item.href2html,
@@ -134,9 +142,7 @@ function RenderExtras(entry, result)
         {
             result.push(' aria-label="', item.arialabel, '"');
         }
-        result.push('>',
-            Utils.TeX2Html(false, item.name),
-            '</a></span>');
+        result.push('>', item.name, '</a></span>');
     }
     if (!first)
     {
@@ -145,6 +151,17 @@ function RenderExtras(entry, result)
     else
     {
         result.pop();
+    }
+}
+
+function RenderExtra(entry, result)
+{
+    const extra = field(entry, 'biosite_extra').Raw;
+    if (extra)
+    {
+        result.push('<div class="gl-bibtex-entry-extra">',
+            Utils.TeX2Html(false, extra),
+            '</div>\n');
     }
 }
 
@@ -162,10 +179,11 @@ function RenderDatabase(parsed)
     for (const entry of parsed.Entries)
     {
         result.push('<div class="', className, '" id="bibitem_',
-            entry.Id, '">\n');
+            entry.Id.replace(/:/g, '_'), '">\n');
         RenderTitle(entry, result);
         RenderAuthors(entry, result);
-        RenderExtras(entry, result);
+        RenderInfo(entry, result);
+        RenderExtra(entry, result);
         result.push('</div>\n');
         className = 'gl-bibtex-entry gl-bibtex-notfirstentry';
     }

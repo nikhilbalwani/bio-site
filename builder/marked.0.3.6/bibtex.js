@@ -765,7 +765,7 @@ var ObjectModel_EntryDataPrivates = (function () {
         this.Resolved = undefined;
         return true;
     };
-    ObjectModel_EntryDataPrivates.prototype.Resolve = function (refresh) {
+    ObjectModel_EntryDataPrivates.prototype.Resolve = function (macros, refresh) {
         if (this.Resolving) {
             return this.Resolved;
         }
@@ -778,13 +778,14 @@ var ObjectModel_EntryDataPrivates = (function () {
                 var fields = owner.Fields;
                 var resultFields = result.Fields;
                 for (var field in fields) {
-                    resultFields[field] = fields[field].Resolve(refresh);
+                    resultFields[field] =
+                        fields[field].Resolve(macros, refresh);
                 }
                 var crossref = resultFields['crossref'];
                 if (crossref !== undefined) {
                     var parent_1 = this.ofKey[crossref.Raw];
                     if (parent_1 !== undefined) {
-                        var parentResolved = parent_1.Resolve(refresh);
+                        var parentResolved = parent_1.Resolve(macros, refresh);
                         var parentFields = parentResolved.Fields;
                         for (var field in parentFields) {
                             if (resultFields[field] === undefined) {
@@ -816,8 +817,8 @@ var ObjectModel_EntryData = (function () {
         this.Fields = Helper.NewEmptyObject();
         Helper.FreezeObject(this);
     }
-    ObjectModel_EntryData.prototype.Resolve = function (refresh) {
-        return this._MutablePrivates.Resolve(refresh);
+    ObjectModel_EntryData.prototype.Resolve = function (macros, refresh) {
+        return this._MutablePrivates.Resolve(macros, refresh);
     };
     ObjectModel_EntryData.prototype.Unresolve = function () {
         return this._MutablePrivates.Unresolve();
@@ -1417,6 +1418,31 @@ var ObjectModel_ParseDatabaseResult = (function () {
         }
         return true;
     };
+    ObjectModel_ParseDatabaseResult.prototype.UnresolveAll = function () {
+        var strings = this.Strings;
+        for (var strid in strings) {
+            strings[strid].Unresolve();
+        }
+        for (var _i = 0, _a = this.Entries; _i < _a.length; _i++) {
+            var entry = _a[_i];
+            entry.Unresolve();
+        }
+    };
+    ObjectModel_ParseDatabaseResult.MonthMacros = (function (obj) {
+        obj['jan'] = Strings_ParseLiteral('1').Result;
+        obj['feb'] = Strings_ParseLiteral('2').Result;
+        obj['mar'] = Strings_ParseLiteral('3').Result;
+        obj['apr'] = Strings_ParseLiteral('4').Result;
+        obj['may'] = Strings_ParseLiteral('5').Result;
+        obj['jun'] = Strings_ParseLiteral('6').Result;
+        obj['jul'] = Strings_ParseLiteral('7').Result;
+        obj['aug'] = Strings_ParseLiteral('8').Result;
+        obj['sep'] = Strings_ParseLiteral('9').Result;
+        obj['oct'] = Strings_ParseLiteral('10').Result;
+        obj['nov'] = Strings_ParseLiteral('11').Result;
+        obj['dec'] = Strings_ParseLiteral('12').Result;
+        return obj;
+    })(Helper.NewEmptyObject());
     return ObjectModel_ParseDatabaseResult;
 }());
 
@@ -2166,7 +2192,7 @@ var ObjectModel_StringExprPrivates = (function () {
         this.Resolved = undefined;
         return true;
     };
-    ObjectModel_StringExprPrivates.prototype.Resolve = function (refresh) {
+    ObjectModel_StringExprPrivates.prototype.Resolve = function (macros, refresh) {
         if (this.Resolving) {
             return Strings_Literal.Empty;
         }
@@ -2179,7 +2205,7 @@ var ObjectModel_StringExprPrivates = (function () {
                     var summand = _a[_i];
                     pieces.push(summand instanceof Strings_Literal
                         ? summand
-                        : summand.Resolve(refresh));
+                        : summand.Resolve(macros, refresh));
                 }
                 this.Resolved = Strings_Literal.Concat(pieces);
             }
@@ -2217,8 +2243,8 @@ var ObjectModel_StringExpr = (function () {
     ObjectModel_StringExpr.prototype.Unresolve = function () {
         return this._MutablePrivates.Unresolve();
     };
-    ObjectModel_StringExpr.prototype.Resolve = function (refresh) {
-        return this._MutablePrivates.Resolve(refresh);
+    ObjectModel_StringExpr.prototype.Resolve = function (macros, refresh) {
+        return this._MutablePrivates.Resolve(macros, refresh);
     };
     ObjectModel_StringExpr.Concat = function (strexprs) {
         if (!(strexprs instanceof Array)
@@ -2261,7 +2287,7 @@ var ObjectModel_StringRefPrivates = (function () {
         this.Resolved = undefined;
         return true;
     };
-    ObjectModel_StringRefPrivates.prototype.Resolve = function (refresh) {
+    ObjectModel_StringRefPrivates.prototype.Resolve = function (macros, refresh) {
         if (this.Resolving) {
             return Strings_Literal.Empty;
         }
@@ -2269,9 +2295,16 @@ var ObjectModel_StringRefPrivates = (function () {
             try {
                 this.Resolving = true;
                 this.Resolved = Strings_Literal.Empty;
-                var referee = this.Owner.Dictionary[this.Owner.Referee];
-                if (referee instanceof ObjectModel_StringExpr) {
-                    this.Resolved = referee.Resolve(refresh);
+                var referee = this.Owner.Referee;
+                var stringReferee = this.Owner.Dictionary[referee];
+                if (stringReferee instanceof ObjectModel_StringExpr) {
+                    this.Resolved = stringReferee.Resolve(macros, refresh);
+                }
+                if (macros) {
+                    var macroReferee = macros[referee];
+                    if (macroReferee instanceof Strings_Literal) {
+                        this.Resolved = macroReferee;
+                    }
                 }
             }
             finally {
@@ -2292,8 +2325,8 @@ var ObjectModel_StringRef = (function () {
     ObjectModel_StringRef.prototype.Unresolve = function () {
         return this._MutablePrivates.Unresolve();
     };
-    ObjectModel_StringRef.prototype.Resolve = function (refresh) {
-        return this._MutablePrivates.Resolve(refresh);
+    ObjectModel_StringRef.prototype.Resolve = function (macros, refresh) {
+        return this._MutablePrivates.Resolve(macros, refresh);
     };
     return ObjectModel_StringRef;
 }());
@@ -2801,7 +2834,7 @@ var TeX_SimpleRenderer = (function () {
     TeX_SimpleRenderer.StackFrame = TeX_SimpleRenderer_StackFrame;
     TeX_SimpleRenderer.CtrlSeq1Arg = [
         '`', "'", '^', '"', '~', '=', '.',
-        'u', 'v', 'H', 't', 'c', 'd', 'b',
+        'u', 'v', 'H', 't', 'c', 'd', 'b', 'r',
         'text', 'emph',
         'textrm', 'textsf', 'texttt',
         'textmd', 'textbf',
@@ -2949,6 +2982,7 @@ var TeX_TextRendererPrivates = (function (_super) {
         obj['c'] = '̧';
         obj['d'] = '̣';
         obj['b'] = '̱';
+        obj['r'] = '̊';
         return Helper.FreezeObject(obj);
     })(Helper.NewEmptyObject());
     TeX_TextRendererPrivates.CtrlSeqTextReplacement = (function (obj) {
@@ -3081,7 +3115,7 @@ var Styles_Abbrv = (function () {
         if (entries instanceof Array) {
             var len = entries.length;
             for (var i = 0; i !== len; ++i) {
-                result.push(new Styles_Plain_SortedEntry(true, entries[i], i));
+                result.push(new Styles_Plain_SortedEntry(true, entries[i], i, Styles_Abbrv.Macros));
             }
         }
         result.sort(Styles_Plain_SortedEntry.Compare);
@@ -3109,15 +3143,50 @@ var Styles_Abbrv = (function () {
         return Styles_AbbrvImpl.ProcessEntry(myEntry);
     };
     Styles_Abbrv.SortedEntry = Styles_Plain_SortedEntry;
+    Styles_Abbrv.Macros = (function (obj) {
+        obj['jan'] = Strings_ParseLiteral('Jan.').Result;
+        obj['feb'] = Strings_ParseLiteral('Feb.').Result;
+        obj['mar'] = Strings_ParseLiteral('Mar.').Result;
+        obj['apr'] = Strings_ParseLiteral('Apr.').Result;
+        obj['may'] = Strings_ParseLiteral('May').Result;
+        obj['jun'] = Strings_ParseLiteral('June').Result;
+        obj['jul'] = Strings_ParseLiteral('July').Result;
+        obj['aug'] = Strings_ParseLiteral('Aug.').Result;
+        obj['sep'] = Strings_ParseLiteral('Sept.').Result;
+        obj['oct'] = Strings_ParseLiteral('Oct.').Result;
+        obj['nov'] = Strings_ParseLiteral('Nov.').Result;
+        obj['dec'] = Strings_ParseLiteral('Dec.').Result;
+        obj['acmcs'] = Strings_ParseLiteral('ACM Comput. Surv.').Result;
+        obj['acta'] = Strings_ParseLiteral('Acta Inf.').Result;
+        obj['cacm'] = Strings_ParseLiteral('Commun. ACM').Result;
+        obj['ibmjrd'] = Strings_ParseLiteral('IBM J. Res. Dev.').Result;
+        obj['ibmsj'] = Strings_ParseLiteral('IBM Syst.~J.').Result;
+        obj['ieeese'] = Strings_ParseLiteral('IEEE Trans. Softw. Eng.').Result;
+        obj['ieeetc'] = Strings_ParseLiteral('IEEE Trans. Comput.').Result;
+        obj['ieeetcad'] = Strings_ParseLiteral('IEEE Trans. Comput.-Aided Design Integrated Circuits').Result;
+        obj['ipl'] = Strings_ParseLiteral('Inf. Process. Lett.').Result;
+        obj['jacm'] = Strings_ParseLiteral('J.~ACM').Result;
+        obj['jcss'] = Strings_ParseLiteral('J.~Comput. Syst. Sci.').Result;
+        obj['scp'] = Strings_ParseLiteral('Sci. Comput. Programming').Result;
+        obj['sicomp'] = Strings_ParseLiteral('SIAM J. Comput.').Result;
+        obj['tocs'] = Strings_ParseLiteral('ACM Trans. Comput. Syst.').Result;
+        obj['tods'] = Strings_ParseLiteral('ACM Trans. Database Syst.').Result;
+        obj['tog'] = Strings_ParseLiteral('ACM Trans. Gr.').Result;
+        obj['toms'] = Strings_ParseLiteral('ACM Trans. Math. Softw.').Result;
+        obj['toois'] = Strings_ParseLiteral('ACM Trans. Office Inf. Syst.').Result;
+        obj['toplas'] = Strings_ParseLiteral('ACM Trans. Prog. Lang. Syst.').Result;
+        obj['tcs'] = Strings_ParseLiteral('Theoretical Comput. Sci.').Result;
+        return obj;
+    })(Helper.NewEmptyObject());
     return Styles_Abbrv;
 }());
 
 ;"use strict";
 var Styles_Alpha_SortedEntry = (function () {
-    function Styles_Alpha_SortedEntry(src, idx) {
+    function Styles_Alpha_SortedEntry(src, idx, macros) {
         this.Source = src;
         var entry = (src instanceof ObjectModel_EntryData
-            ? src.Resolve()
+            ? src.Resolve(macros)
             : src instanceof ObjectModel_Entry
                 ? src
                 : undefined);
@@ -3375,7 +3444,7 @@ var Styles_Alpha = (function () {
         if (entries instanceof Array) {
             var len = entries.length;
             for (var i = 0; i !== len; ++i) {
-                result.push(new Styles_Alpha_SortedEntry(entries[i], i));
+                result.push(new Styles_Alpha_SortedEntry(entries[i], i, Styles_Alpha.Macros));
             }
         }
         result.sort(Styles_Alpha_SortedEntry.Compare);
@@ -3403,6 +3472,41 @@ var Styles_Alpha = (function () {
         return Styles_AlphaImpl.ProcessEntry(myEntry);
     };
     Styles_Alpha.SortedEntry = Styles_Alpha_SortedEntry;
+    Styles_Alpha.Macros = (function (obj) {
+        obj['jan'] = Strings_ParseLiteral('January').Result;
+        obj['feb'] = Strings_ParseLiteral('February').Result;
+        obj['mar'] = Strings_ParseLiteral('March').Result;
+        obj['apr'] = Strings_ParseLiteral('April').Result;
+        obj['may'] = Strings_ParseLiteral('May').Result;
+        obj['jun'] = Strings_ParseLiteral('June').Result;
+        obj['jul'] = Strings_ParseLiteral('July').Result;
+        obj['aug'] = Strings_ParseLiteral('August').Result;
+        obj['sep'] = Strings_ParseLiteral('September').Result;
+        obj['oct'] = Strings_ParseLiteral('October').Result;
+        obj['nov'] = Strings_ParseLiteral('November').Result;
+        obj['dec'] = Strings_ParseLiteral('December').Result;
+        obj['acmcs'] = Strings_ParseLiteral('ACM Computing Surveys').Result;
+        obj['acta'] = Strings_ParseLiteral('Acta Informatica').Result;
+        obj['cacm'] = Strings_ParseLiteral('Communications of the ACM').Result;
+        obj['ibmjrd'] = Strings_ParseLiteral('IBM Journal of Research and Development').Result;
+        obj['ibmsj'] = Strings_ParseLiteral('IBM Systems Journal').Result;
+        obj['ieeese'] = Strings_ParseLiteral('IEEE Transactions on Software Engineering').Result;
+        obj['ieeetc'] = Strings_ParseLiteral('IEEE Transactions on Computers').Result;
+        obj['ieeetcad'] = Strings_ParseLiteral('IEEE Transactions on Computer-Aided Design of Integrated Circuits').Result;
+        obj['ipl'] = Strings_ParseLiteral('Information Processing Letters').Result;
+        obj['jacm'] = Strings_ParseLiteral('Journal of the ACM').Result;
+        obj['jcss'] = Strings_ParseLiteral('Journal of Computer and System Sciences').Result;
+        obj['scp'] = Strings_ParseLiteral('Science of Computer Programming').Result;
+        obj['sicomp'] = Strings_ParseLiteral('SIAM Journal on Computing').Result;
+        obj['tocs'] = Strings_ParseLiteral('ACM Transactions on Computer Systems').Result;
+        obj['tods'] = Strings_ParseLiteral('ACM Transactions on Database Systems').Result;
+        obj['tog'] = Strings_ParseLiteral('ACM Transactions on Graphics').Result;
+        obj['toms'] = Strings_ParseLiteral('ACM Transactions on Mathematical Software').Result;
+        obj['toois'] = Strings_ParseLiteral('ACM Transactions on Office Information Systems').Result;
+        obj['toplas'] = Strings_ParseLiteral('ACM Transactions on Programming Languages and Systems').Result;
+        obj['tcs'] = Strings_ParseLiteral('Theoretical Computer Science').Result;
+        return obj;
+    })(Helper.NewEmptyObject());
     return Styles_Alpha;
 }());
 
@@ -3613,10 +3717,10 @@ var Styles_Helper = (function () {
 
 ;"use strict";
 var Styles_Plain_SortedEntry = (function () {
-    function Styles_Plain_SortedEntry(abbrv, src, idx) {
+    function Styles_Plain_SortedEntry(abbrv, src, idx, macros) {
         this.Source = src;
         var entry = (src instanceof ObjectModel_EntryData
-            ? src.Resolve()
+            ? src.Resolve(macros)
             : src instanceof ObjectModel_Entry
                 ? src
                 : undefined);
@@ -3681,7 +3785,7 @@ var Styles_Plain = (function () {
         if (entries instanceof Array) {
             var len = entries.length;
             for (var i = 0; i !== len; ++i) {
-                result.push(new Styles_Plain_SortedEntry(true, entries[i], i));
+                result.push(new Styles_Plain_SortedEntry(true, entries[i], i, Styles_Plain.Macros));
             }
         }
         result.sort(Styles_Plain_SortedEntry.Compare);
@@ -3709,6 +3813,41 @@ var Styles_Plain = (function () {
         return Styles_PlainImpl.ProcessEntry(myEntry);
     };
     Styles_Plain.SortedEntry = Styles_Plain_SortedEntry;
+    Styles_Plain.Macros = (function (obj) {
+        obj['jan'] = Strings_ParseLiteral('January').Result;
+        obj['feb'] = Strings_ParseLiteral('February').Result;
+        obj['mar'] = Strings_ParseLiteral('March').Result;
+        obj['apr'] = Strings_ParseLiteral('April').Result;
+        obj['may'] = Strings_ParseLiteral('May').Result;
+        obj['jun'] = Strings_ParseLiteral('June').Result;
+        obj['jul'] = Strings_ParseLiteral('July').Result;
+        obj['aug'] = Strings_ParseLiteral('August').Result;
+        obj['sep'] = Strings_ParseLiteral('September').Result;
+        obj['oct'] = Strings_ParseLiteral('October').Result;
+        obj['nov'] = Strings_ParseLiteral('November').Result;
+        obj['dec'] = Strings_ParseLiteral('December').Result;
+        obj['acmcs'] = Strings_ParseLiteral('ACM Computing Surveys').Result;
+        obj['acta'] = Strings_ParseLiteral('Acta Informatica').Result;
+        obj['cacm'] = Strings_ParseLiteral('Communications of the ACM').Result;
+        obj['ibmjrd'] = Strings_ParseLiteral('IBM Journal of Research and Development').Result;
+        obj['ibmsj'] = Strings_ParseLiteral('IBM Systems Journal').Result;
+        obj['ieeese'] = Strings_ParseLiteral('IEEE Transactions on Software Engineering').Result;
+        obj['ieeetc'] = Strings_ParseLiteral('IEEE Transactions on Computers').Result;
+        obj['ieeetcad'] = Strings_ParseLiteral('IEEE Transactions on Computer-Aided Design of Integrated Circuits').Result;
+        obj['ipl'] = Strings_ParseLiteral('Information Processing Letters').Result;
+        obj['jacm'] = Strings_ParseLiteral('Journal of the ACM').Result;
+        obj['jcss'] = Strings_ParseLiteral('Journal of Computer and System Sciences').Result;
+        obj['scp'] = Strings_ParseLiteral('Science of Computer Programming').Result;
+        obj['sicomp'] = Strings_ParseLiteral('SIAM Journal on Computing').Result;
+        obj['tocs'] = Strings_ParseLiteral('ACM Transactions on Computer Systems').Result;
+        obj['tods'] = Strings_ParseLiteral('ACM Transactions on Database Systems').Result;
+        obj['tog'] = Strings_ParseLiteral('ACM Transactions on Graphics').Result;
+        obj['toms'] = Strings_ParseLiteral('ACM Transactions on Mathematical Software').Result;
+        obj['toois'] = Strings_ParseLiteral('ACM Transactions on Office Information Systems').Result;
+        obj['toplas'] = Strings_ParseLiteral('ACM Transactions on Programming Languages and Systems').Result;
+        obj['tcs'] = Strings_ParseLiteral('Theoretical Computer Science').Result;
+        return obj;
+    })(Helper.NewEmptyObject());
     return Styles_Plain;
 }());
 
@@ -4127,9 +4266,6 @@ var Styles_StandardStyle = (function () {
 
 ;"use strict";
 function Styles_ResolveYear(entry) {
-    if (entry instanceof ObjectModel_EntryData) {
-        entry = entry.Resolve();
-    }
     if (!(entry instanceof ObjectModel_Entry)) {
         return Number.NaN;
     }
@@ -4165,23 +4301,20 @@ function Styles_ResolveYear(entry) {
 }
 var Styles_MonthTranslator = [
     [],
-    ['01', 'jan', '1', 'january'],
-    ['02', 'feb', '2', 'february'],
-    ['03', 'mar', '3', 'march'],
-    ['04', 'apr', '4', 'april'],
+    ['01', 'jan', 'jan.', '1', 'january'],
+    ['02', 'feb', 'feb.', '2', 'february'],
+    ['03', 'mar', 'mar.', '3', 'march'],
+    ['04', 'apr', 'apr.', '4', 'april'],
     ['05', 'may', '5'],
-    ['06', 'jun', '6', 'june'],
-    ['07', 'jul', '7', 'july'],
-    ['08', 'aug', '8', 'august'],
-    ['09', 'sep', '9', 'sept', 'september'],
-    ['10', 'oct', 'october'],
-    ['11', 'nov', 'november'],
-    ['12', 'dec', 'december'],
+    ['06', 'jun', 'jun.', '6', 'june'],
+    ['07', 'jul', 'jul.', '7', 'july'],
+    ['08', 'aug', 'aug.', '8', 'august'],
+    ['09', 'sep', 'sep.', '9', 'sept', 'sept.', 'september'],
+    ['10', 'oct', 'oct.', 'october'],
+    ['11', 'nov', 'nov.', 'november'],
+    ['12', 'dec', 'dec.', 'december'],
 ];
 function Styles_ResolveMonth(entry) {
-    if (entry instanceof ObjectModel_EntryData) {
-        entry = entry.Resolve();
-    }
     if (!(entry instanceof ObjectModel_Entry)) {
         return Number.NaN;
     }

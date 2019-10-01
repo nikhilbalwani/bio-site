@@ -266,7 +266,7 @@ const CtrlSeqDiacritics = (function (obj) {
     obj['"'] = '̈'; obj['~'] = '̃'; obj['='] = '̄';
     obj['.'] = '̇'; obj['u'] = '̆'; obj['v'] = '̌';
     obj['H'] = '̋'; obj['t'] = '͡'; obj['c'] = '̧';
-    obj['d'] = '̣'; obj['b'] = '̱';
+    obj['d'] = '̣'; obj['b'] = '̱'; obj['r'] = '̊';
     return obj;
 })({});
 
