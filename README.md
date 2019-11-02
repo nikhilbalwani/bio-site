@@ -63,7 +63,7 @@ tgt.removeAttribute('class');
                   Sabine Oechsner and
                   Peter Scholl and
                   Mark Simkin",
-  title =        "Compact Zero-Knowledge Proofs of Small Hamming Weight",
+  title =        "Compact Zero-Knowledge Proofs of Small {H}amming Weight",
   pages =        "530--560",
   editor =       pkc18ed,
   booktitle =    pkc18name2,
@@ -86,24 +86,20 @@ tgt.removeAttribute('class');
 
 ```blog-bib
 
-@article{ARXIV:LLZCX19,
-  author    = {Ting Fung Lau and
-               Ji Luo and
-               Shengyu Zhao and
-               Eric I{-}Chao Chang and
-               Yan Xu},
-  title     = {Unsupervised 3D End-to-End Medical Image Registration with Volume
-               Tweening Network},
-  journal   = {CoRR},
-  volume    = {abs/1902.05020},
-  year      = {2019},
-  url       = {http://arxiv.org/abs/1902.05020},
-  archivePrefix = {arXiv},
-  eprint    = {1902.05020},
-  timestamp = {Tue, 21 May 2019 18:03:37 +0200},
-  biburl    = {https://dblp.org/rec/bib/journals/corr/abs-1902-05020},
-  bibsource = {dblp computer science bibliography, https://dblp.org},
+@article{JBHI:ZLLCX19,
+  author  = {Shengyu Zhao and
+             Tingfung Lau and
+             Ji Luo and
+             Eric I{-}Chao Chang
+             and Yan Xu},
+  journal = {{IEEE} {J}ournal of {B}iomedical and {H}ealth {I}nformatics},
+  title   = {Unsupervised 3{D} End-to-End Medical Image Registration
+             with {V}olume {T}weening {N}etwork},
+  year    = 2019,
+  doi     = {10.1109/JBHI.2019.2951024},
 
+  biosite_url = {https://doi.org/10.1109/JBHI.2019.2951024},
+  biosite_venue = {IEEE J-HBI},
   biosite_arxiv = {1902.05020},
 }
 
