@@ -2,7 +2,7 @@ const path = require('path');
 const repo = path.dirname(process.argv[1]);
 const marked = require(path.join(repo, 'builder', 'marked.0.3.6', 'marked.js'));
 
-const KaTeX = require(path.join(repo, 'builder', 'katex.0.10.1', 'katex.js'));
+const KaTeX = require(path.join(repo, 'builder', 'katex.0.11.1', 'katex.js'));
 const htmlEntityMap = { '"': '&quot;', '\'': '&39;', '&': '&amp;', '<': '&lt;', '>': '&gt;', '/': '&#47;', '\\': '&#92;', '\r': '&#13;', '\n': '&#10;' };
 const entityMap = function (x) { return htmlEntityMap[x]; };
 const sanitizeForAttribute = function (text) { return text.replace(/["'&<>\/\\\r\n]/g, entityMap); };

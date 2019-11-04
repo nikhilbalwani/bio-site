@@ -81,6 +81,34 @@ function NoSpaceLower(text)
             function (x) { return x.toLowerCase(); });
 }
 
+function ResolveFrom(parsed, names)
+{
+    for (const name of names)
+    {
+        const strexpr = parsed.Strings[name];
+        if (strexpr === undefined)
+        {
+            continue;
+        }
+        const strlit = strexpr.Resolve();
+        if (strlit === undefined)
+        {
+            continue;
+        }
+        return strlit.Raw;
+    }
+    return undefined;
+}
+
+const WrapperLangFields =
+[
+    'wrapperlang', 'lang'
+];
+function ResolveWrapperLang(parsed)
+{
+    return ResolveFrom(parsed, WrapperLangFields);
+}
+
 function ResolveAmong(parsed, names, values)
 {
     for (const name of names)
@@ -619,6 +647,8 @@ const BlogBibTeX_Utils = {
     DumbPuncts: DumbPuncts,
     SafeIdForAscii: SafeIdForAscii,
     NoSpaceLower: NoSpaceLower,
+    ResolveFrom: ResolveFrom,
+    ResolveWrapperLang: ResolveWrapperLang,
     ResolveAmong: ResolveAmong,
     ResolveCitationBrackets: ResolveCitationBrackets,
     ResolveCitationComma: ResolveCitationComma,
