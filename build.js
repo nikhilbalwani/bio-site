@@ -87,8 +87,8 @@ function RenderKaTeX(part, isDisplay)
 };
 
 const fs = require('fs');
-const READMEmd = path.join(repo, 'README.md');
-const content = fs.readFileSync(READMEmd, 'utf8');
+const indexmd = path.join(repo, 'index.md');
+const content = fs.readFileSync(indexmd, 'utf8');
 const rendered = marked(content);
 
 const months = ['January', 'February', 'March', 'April',
@@ -153,6 +153,9 @@ indexhtml = indexhtml.replace(
 indexhtml = indexhtml.replace(
     /<!--\[bio\]\[date-created\]([\u0000-\uffff]*?)\[bio\]-->/g,
     meta['date-created']);
+indexhtml = indexhtml.replace(
+    /<!--\[bio\]\[tilecolor\]([\u0000-\uffff]*?)\[bio\]-->/g,
+    meta.tilecolor);
 indexhtml = indexhtml.replace(
     /<!--\[bio\]\[repo\]([\u0000-\uffff]*?)\[bio\]-->/g,
     meta.repo);

@@ -1,18 +1,3 @@
-```bio-remove
-Steps of using this template:
-
-1. Write a code block with the language "bio-meta" to set up metadata.
-2. Use a heading (level 1) with "#" to set the heading. Use this only once.
-3. Write Markdown as usual with these extensions:
-  - To add comments that are not printed, write a code block with the language "bio-remove".
-  - To protect an excerpt so that it's printed as-is, write <!--[bio][protect]your content here[bio]-->.
-  - To write a math equation, write `math:\LaTeX` or `display:\LaTeX`.
-  - To include a list of papers, put the BibTeX citations in the order you want it to appear in a code block with the language "blog-bib".
-4. Run "build.sh" or "build.bat" or "build.js" to compile.
-
-NOTE that this README.md is not licensed under the MIT license. You can use this as a reference or template, but not use (the specific content of) this file (relating to the original author).
-```
-
 ```bio-meta
 {
     "name": "Ji Luo",
@@ -20,7 +5,8 @@ NOTE that this README.md is not licensed under the MIT license. You can use this
     "description": "Ji Luo&#8217;s curriculum vitae.",
     "domain": "luoji.bio",
     "date-created": "2019-08-25",
-    "repo": "https://github.com/GeeLaw/bio-site"
+    "repo": "https://github.com/GeeLaw/bio-site",
+    "tilecolor": "#222222"
 }
 ```
 
@@ -34,21 +20,20 @@ Prior to joining [Paul G. Allen School of Computer Science and Engineering](http
 
 I can be reached at <span id="_eml" class="gl-eml">3-letter-name 2-letter-name at cs dot washington dot edu</span>.
 
+```bio-remove
+Below we use a simple mechanism to mitigate email address reaping.
+Change the encoding for your own email address.
+```
+
 <!--[bio][protect]
 <script type="application/javascript">
 window.setTimeout(function ()
 {
-var u = [228, 92, 74, 215, 63, 210, 81, 104, 137, 163, 84, 110, 57, 62, 121, 92, 41, 249, 37, 228, 235, 150, 183];
-var v = [136, 41, 37, 189, 86, 146, 50, 27, 167, 212, 53, 29, 81, 87, 23, 59, 93, 150, 75, 202, 142, 242, 194];
-var addr = [];
-for (var i = 0; i !== 23; ++i)
-{
-addr.push(String.fromCharCode(u[i] ^ v[i]));
-}
-addr = addr.join('');
-var tgt = document.getElementById('_eml');
-tgt.innerHTML = '<a href="mailto:' + addr + '">' + addr + '</a>';
-tgt.removeAttribute('class');
+var addr = [108,117,111,106,105,64,99,115,46,119,97,115,104,105,110,103,116,111,110,46,101,100,117];
+addr = String.fromCharCode.apply(String, addr);
+var eml = document.getElementById('_eml');
+eml.innerHTML = '<a href="mailto:' + addr + '">' + addr + '</a>';
+eml.removeAttribute('class');
 }, 600);
 </script>
 [bio]-->
@@ -56,6 +41,15 @@ tgt.removeAttribute('class');
 ## Publications
 
 ```blog-bib
+
+@comment
+{
+The output is guaranteed to be labeled.
+You can use #bibitem_PKC_DLOSS18 to refer to "PKC:DLOSS18".
+
+To support more information links (e.g., allow "slides" or "pdf" links),
+see "builder/marked.0.3.6/bibtex-service.js" line 85.
+}
 
 @InProceedings{PKC:DLOSS18,
   author =       "Ivan Damg{\r a}rd and
