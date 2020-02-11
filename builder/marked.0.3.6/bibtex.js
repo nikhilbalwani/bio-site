@@ -115,7 +115,7 @@ var Strings_BasicPieceBuilder = (function () {
         this.Case = (probe
             ? /[A-Z]/.test(probe[0]) ? 'U' : 'l'
             : '?');
-        this.Purified = value.replace(/[~\t\v\f-]/g, ' ').replace(/[\u0000-\u001f\u0021-\u002f\u003a-\u0040\u005b-\u0060\u007b-\u007f]+/g, '');
+        this.Purified = value.replace(/[~\t\v\f\r\n-]/g, ' ').replace(/[\u0000-\u001f\u0021-\u002f\u003a-\u0040\u005b-\u0060\u007b-\u007f]+/g, '');
         Helper.FreezeObject(this);
     }
     return Strings_BasicPieceBuilder;
@@ -143,7 +143,7 @@ var Strings_BracedPieceBuilder = (function () {
     function Strings_BracedPieceBuilder(value) {
         this.Value = value;
         this.Length = value.replace(/[{}]/g, '').length;
-        this.Purified = value.replace(/[~\t\v\f-]/g, ' ').replace(/[\u0000-\u001f\u0021-\u002f\u003a-\u0040\u005b-\u0060\u007b-\u007f]+/g, '');
+        this.Purified = value.replace(/[~\t\v\f\r\n-]/g, ' ').replace(/[\u0000-\u001f\u0021-\u002f\u003a-\u0040\u005b-\u0060\u007b-\u007f]+/g, '');
         this.Raw = '{' + value + '}';
         Helper.FreezeObject(this);
     }

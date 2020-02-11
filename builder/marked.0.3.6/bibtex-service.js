@@ -14,17 +14,41 @@ function field(entry, field)
     return field2 || BibTeX.Strings.Literal.Empty;
 }
 
-function RenderTitle(entry, result)
+function ResolveUrl(entry)
 {
     const url = field(entry, 'biosite_url').Raw;
-    result.push('<div class="gl-bibtex-entry-title"><span class="gl-bibtex-entry-bullet" aria-label="bullet symbol">&#8226; </span><a');
+    const doi = field(entry, 'doi').Raw;
+    return (url || !doi
+        ? url
+        : /http(s)?:\/\/doi\.org/gi.test(doi)
+        ? doi
+        : 'https://doi.org/' + doi);
+}
+
+function RenderTitle(entry, result)
+{
+    const url = ResolveUrl(entry);
+    const title = field(entry, 'title');
+    const arialabel = field(entry, 'biosite_arialabel').Raw;
+    const titlehtml = Utils.TeX2Html(false, title.Raw);
+    const hasMath = /<!--\[blog\]\[katex(-display)?\]([\u0000-\uffff]*?)\[blog\]-->/g.test(titlehtml);
+    const hasLabel = !!(hasMath || (url && arialabel));
+    result.push('<div class="gl-bibtex-entry-title"><span class="gl-bibtex-entry-bullet" aria-label="bullet symbol" role="img"><span aria-hidden="true">&#8226;</span> </span><a');
+    if (hasLabel)
+    {
+        result.push(' aria-label="',
+            Utils.HtmlEncode(arialabel || title.Purified), '"');
+    }
     if (url)
     {
         result.push(' href="', Utils.HtmlEncode(url), '" rel="nofollow"');
     }
-    result.push('>',
-        Utils.TeX2Html(false, field(entry, 'title').Raw),
-        '</a></div>\n');
+    else if (hasLabel)
+    {
+        result.push(' role="math"');
+    }
+    result.push(hasLabel ? '><span aria-hidden="true">' : '>',
+        titlehtml, hasLabel ? '</span></a></div>\n' : '</a></div>\n');
 }
 
 const AuthorFormat = BibTeX.ParsePersonNameFormat('{ff }{vv~}{ll}{, jj}');
