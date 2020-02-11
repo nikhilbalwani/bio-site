@@ -12,9 +12,9 @@
 
 # Ji Luo<span aria-hidden="true"> (</span><span lang="zh-CN">罗辑</span><span aria-hidden="true">)</span>
 
-<figure class="gl-page-background gl-float-right" style="text-align: center;"><img src="/assets/images/hero-image.jpg" alt="A photo of Ji Luo" width="160" height="160" style="max-width: 160px;" /></figure>
+<figure class="gl-page-background gl-float-right gl-image-box" style="text-align: center;"><img src="/assets/images/hero-image.jpg" alt="A photo of Ji Luo" width="160" height="160" style="max-width: 160px;" /></figure>
 
-I’m a second-year Ph.D. student in computer science, advised by [Huijia (Rachel) Lin](https://homes.cs.washington.edu/~rachel/) and [Stefano Tessaro](https://homes.cs.washington.edu/~tessaro/). My primary research interest is cryptography and I’m also interested in security and computational complexity.
+I’m a second-year Ph.D. student in computer science, advised by [Huijia (Rachel) Lin](https://homes.cs.washington.edu/~rachel/) and [Stefano Tessaro](https://homes.cs.washington.edu/~tessaro/). My primary research interest lies in cryptography.
 
 Prior to joining [Paul G. Allen School of Computer Science and Engineering](https://www.cs.washington.edu/) at the University of Washington, I was a Ph.D. student at [University of California, Santa Barbara](https://cs.ucsb.edu/) for a quarter. I obtained my bachelor’s degree from [Tsinghua University](https://www.tsinghua.edu.cn/publish/thu2018en/index.html), where I attended [Yao class](http://iiis.tsinghua.edu.cn/en/).
 
@@ -92,9 +92,25 @@ see "builder/marked.0.3.6/bibtex-service.js" line 85.
   year    = 2019,
   doi     = {10.1109/JBHI.2019.2951024},
 
-  biosite_url = {https://doi.org/10.1109/JBHI.2019.2951024},
   biosite_venue = {IEEE J-HBI},
   biosite_arxiv = {1902.05020},
+}
+
+```
+
+## Manuscripts
+
+```blog-bib
+
+@unpublished{EC:LinLuo20,
+  author  = {Huijia Lin and Ji Luo},
+  title   = {Compact Adaptively Secure {ABE} from {$k$}-{L}in:
+Beyond {\(\mathsf{\bgroup\bgroup}}{NC}{\egroup{\egroup}^1\)}
+and towards {\(\mathsf{\bgroup\bgroup}}{NL}{\egroup{\egroup}\)}},
+  year    = 2020,
+
+  biosite_arialabel = {Compact Adaptively Secure A-B-E from k-Lin: Beyond NC1 and towards NL},
+  biosite_venue = {To appear in Eurocrypt 2020},
 }
 
 ```
