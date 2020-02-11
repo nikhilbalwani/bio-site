@@ -170,125 +170,6 @@ html:lang(zh),
 
 .gl-phantom { visibility: hidden; }
 
-html:not([gl-theme="dark"]):not([gl-theme="light"]) .gl-theme-switcher,
-.gl-theme-switcher:not([gl-theme="dark"]):not([gl-theme="light"]),
-html[gl-theme="dark"] .gl-theme-switcher[gl-theme="dark"],
-html[gl-theme="light"] .gl-theme-switcher[gl-theme="light"]
-{
-    display: none;
-}
-
-.gl-theme-switcher[gl-theme="light"]::before
-{
-    content: "🔆";
-    font-family: /* @@ SymbolFont */ 'Segoe UI Symbol', 'Segoe UI Emoji', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Apple Color Emoji', 'AppleColorEmoji' /* SymbolFont @@ */;
-}
-.gl-theme-switcher[gl-theme="dark"]::before
-{
-    content: "🔅";
-    font-family: /* @@ SymbolFont */ 'Segoe UI Symbol', 'Segoe UI Emoji', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Apple Color Emoji', 'AppleColorEmoji' /* SymbolFont @@ */;
-}
-
-nav.gl-nav
-{
-    margin: 0;
-    padding: 0 /* @@ PageLeftRightMarginNarrow */ 16px /* PageLeftRightMarginNarrow @@ */;
-    font-size: 0; /* prevent spaces from appearing. */
-    position: relative;
-}
-
-nav.gl-nav > .gl-nav-rightstack
-{
-    position: absolute;
-    right: /* @@ PageLeftRightMarginNarrow */ 16px /* PageLeftRightMarginNarrow @@ */;
-    bottom: 0;
-}
-
-nav.gl-nav > * { display: inline-block; }
-nav.gl-nav > a
-{
-    margin: 0;
-    padding: 0.5em 1em;
-    font-size: /* @@ NavFontSizeNarrow */ 16px /* NavFontSizeNarrow @@ */;
-    text-decoration: none;
-}
-
-#nav-homepage::after
-{
-    content: "🏠";
-    font-family: /* @@ SymbolFont */ 'Segoe UI Symbol', 'Segoe UI Emoji', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Apple Color Emoji', 'AppleColorEmoji' /* SymbolFont @@ */;
-}
-#nav-archive::after
-{
-    content: "📚";
-    font-family: /* @@ SymbolFont */ 'Segoe UI Symbol', 'Segoe UI Emoji', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Apple Color Emoji', 'AppleColorEmoji' /* SymbolFont @@ */;
-}
-#nav-tags::after
-{
-    content: "🔖";
-    font-family: /* @@ SymbolFont */ 'Segoe UI Symbol', 'Segoe UI Emoji', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Apple Color Emoji', 'AppleColorEmoji' /* SymbolFont @@ */;
-}
-#nav-friends::after
-{
-    content: "👥";
-    font-family: /* @@ SymbolFont */ 'Segoe UI Symbol', 'Segoe UI Emoji', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Apple Color Emoji', 'AppleColorEmoji' /* SymbolFont @@ */;
-}
-.gl-feed-sprite::before
-{
-    content: "";
-    display: inline-block;
-    width: 2em;
-    height: 2em;
-    margin: -1em 0.2em -0.14em -0.8em;
-    -ms-high-contrast-adjust: none !important;
-    background-image: url(/assets/images/deco/feed.svg);
-    background-repeat: no-repeat;
-    background-position-x: center;
-    background-position-y: center;
-    background-size: 75%;
-    background-clip: content-box;
-    -webkit-transform-origin: right bottom 0px;
-    -moz-transform-origin: right bottom 0px;
-    -ms-transform-origin: right bottom 0px;
-    -o-transform-origin: right bottom 0px;
-    transform-origin: right bottom 0px;
-    -webkit-transform: scale(0.5);
-    -moz-transform: scale(0.5);
-    -ms-transform: scale(0.5);
-    -o-transform: scale(0.5);
-    transform: scale(0.5);
-    background-color: #ed7d31;
-    border-radius: 0.2em;
-}
-/* The part below is no longer needed because RSS/Atom are invariant. */
-.gl-feed-sprite:lang(zh)::before
-{
-    margin-bottom: -0.2em;
-}
-/* The above part is no longer needed because RSS/Atom are invariant. */
-
-div.gl-rainbow-flag
-{
-    position: absolute;
-    font-size: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: #750787;
-}
-div.gl-rainbow-flag > div { width: 16.67%; height: 100%; display: inline-block; }
-div.gl-rainbow-flag > div.gl-rainbow-red { background: #e40303; }
-div.gl-rainbow-flag > div.gl-rainbow-orange { background: #ff8c00; }
-div.gl-rainbow-flag > div.gl-rainbow-yellow { background: #ffed00; }
-div.gl-rainbow-flag > div.gl-rainbow-green { background: #008026; }
-div.gl-rainbow-flag > div.gl-rainbow-blue { background: #004dff; }
-div.gl-rainbow-flag > div.gl-rainbow-purple { background: #750787; display: none; }
-
-html:not(.gl-show-rainbow) .gl-rainbow-flag
-{
-    display: none !important;
-}
-
 .gl-body-wrapper
 {
     margin: auto;
@@ -296,112 +177,16 @@ html:not(.gl-show-rainbow) .gl-rainbow-flag
     max-width: 1024px;
 }
 
-.gl-share-facebook, .gl-share-twitter, .gl-share-linkedin, .gl-share-sinaweibo
-{
-    display: inline-block;
-    height: 2em;
-    width: 2em;
-    margin-left: 0.6em;
-    background-position: bottom center;
-    background-size: contain;
-    background-repeat: no-repeat;
-}
-
-.gl-share-facebook
-{
-    background-color: #3b579d;
-    background-image: url(/assets/images/social/facebook.png);
-}
-.gl-share-twitter
-{
-    background-color: #1da1f2;
-    background-image: url(/assets/images/social/twitter.png);
-}
-.gl-share-linkedin
-{
-    background-color: #0077b5;
-    background-image: url(/assets/images/social/linkedin.png);
-}
-.gl-share-sinaweibo
-{
-    background-color: #fa4a3a;
-    background-image: url(/assets/images/social/sinaweibo.png);
-}
-
 #post-metadata > h1 { margin-bottom: 0.4em; }
-
-.gl-shortdate:not(pre):not(code):not(samp):not(kbd):not(var)
-{
-    font-family:
-        /* @@ LatinSansFont */
-            'Segoe UI', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Arial'
-        /* LatinSansFont @@ */,
-        /* @@ ChSimpSansFontLow */
-            'Microsoft YaHei', 'PingFang SC', 'PingFangSC'
-        /* ChSimpSansFontLow @@ */,
-        /* @@ SymbolFont */
-            'Segoe UI Symbol', 'Segoe UI Emoji', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Apple Color Emoji', 'AppleColorEmoji'
-        /* SymbolFont @@ */,
-        sans-serif;
-}
 
 .dateline, .byline-name { display: inline-block; }
 
-.gl-share-on
-{
-    text-align: right;
-    -ms-high-contrast-adjust: none !important;
-    line-height: 0;
-}
-
-.gl-entry blockquote:not(.gl-fancy-quote)
+.gl-entry blockquote
 {
     border-left-style: solid;
     border-left-width: 0.2em;
     padding: 0 1em;
     margin: 1em 0;
-}
-
-.gl-entry blockquote.gl-fancy-quote
-{
-    background-repeat: no-repeat;
-    background-position: left top;
-    background-size: 1.4em auto;
-    padding: 0 0 0 2em;
-    margin: 1em auto;
-    clear: left;
-    min-width: 14em;
-    max-width: 100%;
-    width: 32em;
-}
-.gl-entry blockquote.gl-fancy-quote:not(.gl-long-quote)
-{ font-size: 1.2em; }
-.gl-entry blockquote.gl-fancy-quote:not(.gl-rhymic-quote)
-{ text-align: center; }
-
-.gl-entry blockquote.gl-fancy-quote > :not(:lang(zh)):not(.gl-quote-author-line)
-{ font-style: italic; }
-
-.gl-entry blockquote.gl-fancy-quote > :lang(zh):not(.gl-quote-author-line)
-{ font-weight: 600; }
-
-.gl-entry blockquote.gl-fancy-quote > .gl-quote-author-line
-{
-    text-align: right;
-    margin-left: -2em;
-    /* @@ AvoidBreakBefore */
--webkit-page-break-before: avoid;
--webkit-column-break-before: avoid;
--webkit-region-break-before: avoid;
-page-break-before: avoid;
-break-before: avoid;
-    /* AvoidBreakBefore @@ */
-    /* @@ AvoidBreakInside */
--webkit-column-break-inside: avoid;
--webkit-break-inside: avoid;
-page-break-inside: avoid;
-break-inside: avoid;
-    /* AvoidBreakInside @@ */
 }
 
 .gl-entry table,
@@ -623,34 +408,10 @@ break-before: avoid;
 
 .gl-entry a[target="_blank"]::after
 {
-    content: ' ↗';
-    font-family: /* @@ ArrowFont */ 'Calibri', 'Segoe UI Symbol', 'Segoe UI Emoji', 'Menlo', 'Apple Color Emoji', 'AppleColorEmoji' /* ArrowFont @@ */;
+    content: ' ↗';
+    font-family: /* @@ ArrowFont */ 'Calibri', 'Segoe UI Symbol', 'Segoe UI Emoji', '.LucidaGrandeUI-Bold', 'Lucida Grande', 'Menlo', 'Apple Color Emoji', 'AppleColorEmoji' /* ArrowFont @@ */;
 }
 
-.gl-entry a.gl-refback-link
-{
-    margin-right: 0.4em;
-}
-.gl-entry a.gl-refback-link:not(:target)
-{
-    display: none;
-}
-
-.gl-entry a.gl-ref2-label-spl
-{
-    margin-left: 0.4em;
-}
-.gl-entry a.gl-ref2-label-spr
-{
-    margin-right: 0.4em;
-}
-.gl-entry a.gl-ref2-label:not(:target)
-{
-    display: none;
-}
-
-.gl-tags-area a::before,
-.gl-tags-area a::after,
 .gl-entry figcaption > a::before,
 .gl-entry figcaption > a::after,
 .gl-entry a.gl-suppress-deco::before,
@@ -661,33 +422,6 @@ footer a::before,
 footer a::after
 {
     content: '' !important;
-}
-
-.gl-tags-area
-{
-    clear: both;
-    margin-top: 1em;
-    padding-top: 1em;
-}
-
-.gl-tags-area::before
-{
-    content: '🔖';
-    font-family: /* @@ SymbolFont */ 'Segoe UI Symbol', 'Segoe UI Emoji', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Apple Color Emoji', 'AppleColorEmoji' /* SymbolFont @@ */;
-}
-
-.gl-tags-area a
-{
-    margin-left: 0.5em;
-    margin-right: 0.5em;
-}
-
-#comments-area
-{
-    clear: both;
-    margin-top: 1em;
-    overflow-x: hidden;
-    overflow-y: auto;
 }
 
 footer
@@ -708,53 +442,6 @@ footer.gl-footer-near
 footer > *:not(.gl-preserved-dummy-class)
 {
     margin: 0.5em 0.5em 0 0.5em;
-}
-
-html:not(.gl-new-prompt-notice) .gl-prompt-notice-bg,
-html:not(.gl-new-prompt-notice) .gl-prompt-notice
-{
-    display: none !important;
-}
-
-.gl-prompt-notice-bg
-{
-    position: fixed;
-    left: 0px;
-    right: 0px;
-    top: 0px;
-    bottom: 0px;
-    -ms-high-contrast-adjust: none !important;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 65535;
-}
-
-.gl-prompt-notice
-{
-    position: fixed;
-    left: 0px;
-    right: 0px;
-    top: 0px;
-    bottom: 0px;
-    padding-top: 25vh;
-    z-index: 65536;
-}
-
-.gl-prompt-notice > .gl-prompt-notice-dialog
-{
-    width: 480px;
-    max-width: 80%;
-    margin: auto;
-    padding: 4px 20px 20px 20px;
-}
-
-.gl-prompt-notice > .gl-prompt-notice-dialog > .gl-prompt-notice-rightstack
-{
-    text-align: right;
-}
-
-.gl-prompt-notice > .gl-prompt-notice-dialog > .gl-prompt-notice-rightstack > a
-{
-    padding: 8px 16px;
 }
 
 .gl-image-box
@@ -829,13 +516,6 @@ break-after: avoid;
 .gl-float-always-left { float: left; }
 .gl-float-always-right { float: right; }
 
-/* :not[data-collapsion] is a fallback for no-script case. */
-.gl-collapsible:not([data-collapsion]) [data-collapsion=collapse],
-.gl-collapsible:not([data-collapsion]) [data-collapsion=expand],
-.gl-collapsible[data-collapsion=collapsed] [data-collapsion=collapse],
-.gl-collapsible[data-collapsion=visible] [data-collapsion=expand]
-{ display: none; }
-
 @-webkit-keyframes targeted
 {
     17% { opacity: 0; }
@@ -885,12 +565,6 @@ body.gl-targeted-animation *:target
     animation: none !important;
 }
 
-@media screen
-{
-    .gl-collapsible[data-collapsion=collapsed] [data-collapsion=content]
-    { display: none; }
-}
-
 @media (min-resolution: 140dpi)
 {
     html,
@@ -926,20 +600,6 @@ body.gl-targeted-animation *:target
             /* EmojiFont @@ */,
             sans-serif;
     }
-    .gl-shortdate:not(pre):not(code):not(samp):not(kbd):not(var)
-    {
-        font-family:
-            /* @@ LatinSansFont */
-                'Segoe UI', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Arial'
-            /* LatinSansFont @@ */,
-            /* @@ ChSimpSansFontHigh */
-                'DengXian', 'Microsoft YaHei', 'PingFang SC', 'PingFangSC'
-            /* ChSimpSansFontHigh @@ */,
-            /* @@ SymbolFont */
-                'Segoe UI Symbol', 'Segoe UI Emoji', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Apple Color Emoji', 'AppleColorEmoji'
-            /* SymbolFont @@ */,
-            sans-serif;
-    }
     .gl-entry code,
     .gl-entry samp,
     .gl-entry kbd
@@ -972,25 +632,10 @@ body.gl-targeted-animation *:target
     {
         font-size: /* @@ BaseFontSizeWide */ 16px /* BaseFontSizeWide @@ */;
     }
-    nav.gl-nav
-    {
-        padding-left: /* @@ PageLeftRightMarginWide */ 2.5vw /* PageLeftRightMarginWide @@ */;
-        padding-right: /* @@ PageLeftRightMarginWide */ 2.5vw /* PageLeftRightMarginWide @@ */;
-    }
-    nav.gl-nav .gl-nav-rightstack
-    {
-        right: /* @@ PageLeftRightMarginWide */ 2.5vw /* PageLeftRightMarginWide @@ */;
-    }
-    nav.gl-nav > a
-    {
-        font-size: /* @@ NavFontSizeWide */ 20px /* NavFontSizeWide @@ */;
-    }
-    div.gl-rainbow-flag { height: 4px; }
     .gl-body-wrapper
     {
         padding: 20px /* @@ PageLeftRightMarginWide */ 2.5vw /* PageLeftRightMarginWide @@ */;
     }
-    .gl-share-on { margin-top: 0.6em; float: right; }
     .gl-narrow-only
     {
         display: none !important;
@@ -1029,9 +674,7 @@ body.gl-targeted-animation *:target
         -ms-zoom: 90%;
         zoom: 90%;
     }
-    .gl-print-forbidden,
-    .gl-rainbow-flag,
-    nav.gl-nav
+    .gl-print-forbidden
     {
         display: none !important;
     }
@@ -1056,47 +699,20 @@ body.gl-targeted-animation *:target
     {
         margin-bottom: 0 !important;
     }
-    .gl-entry a.gl-refback-link
-    {
-        display: none;
-    }
     .gl-entry a[href]::after
     {
-        content: ' 🔗';
+        content: ' 🔗';
         font-family: /* @@ SymbolFont */ 'Segoe UI Symbol', 'Segoe UI Emoji', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Apple Color Emoji', 'AppleColorEmoji' /* SymbolFont @@ */;
     }
     .gl-entry a[target="_blank"]::after
     {
-        content: ' ↗';
-        font-family: /* @@ ArrowFont */ 'Calibri', 'Segoe UI Symbol', 'Segoe UI Emoji', 'Menlo', 'Apple Color Emoji', 'AppleColorEmoji' /* ArrowFont @@ */;
+        content: ' ↗';
+        font-family: /* @@ ArrowFont */ 'Calibri', 'Segoe UI Symbol', 'Segoe UI Emoji', '.LucidaGrandeUI-Bold', 'Lucida Grande', 'Menlo', 'Apple Color Emoji', 'AppleColorEmoji' /* ArrowFont @@ */;
     }
     .gl-entry a[href^="javascript:"]::after
     {
-        content: ' 📜';
+        content: ' 📜';
         font-family: /* @@ SymbolFont */ 'Segoe UI Symbol', 'Segoe UI Emoji', 'Helvetica Neue', 'HelveticaNeue', 'Helvetica', 'Apple Color Emoji', 'AppleColorEmoji' /* SymbolFont @@ */;
-    }
-    .gl-tags-area::before
-    {
-        content: 'Tags: ';
-        font-family: inherit;
-    }
-    .gl-tags-area:lang(zh)::before
-    {
-        content: '标签：';
-    }
-    .gl-tags-area:lang(fr)::before
-    {
-        content: 'Mots-clés: ';
-    }
-    .gl-tags-area a
-    {
-        margin-left: 0 !important;
-        margin-right: 0.8em !important;
-    }
-    .gl-collapsible [data-collapsion=collapse],
-    .gl-collapsible [data-collapsion=expand]
-    {
-        display: none !important;
     }
 }
 
