@@ -2,6 +2,8 @@
 
 This builder features simplicity and integration with BibTeX. The templates/CSS/scripts are hand-written without leveraging heavy scaffolds. To start, fork and edit [`index.md`](index.md), [`CNAME`](CNAME) and the assets (images).
 
+**To migrate from the 2019 version,** see [this](#upgrading-from-2019).
+
 ## Steps of writing `index.md`
 
 1. Write a code block with the language `bio-meta` to set up metadata.
@@ -37,6 +39,20 @@ On this website, there are a few extensions to BibTeX.
 
 | has `biosite_arialabel`? | `title` has equation? | title is link? | label... |
 | :--: | :--: | :--: | :--: |
-| yes/no | no | no | no label |
-| yes | yes/no | yes | `biosite_arialabel` |
-| no | yes | yes/no | inferred from `title` |
+| yes or no | no | no | no label |
+| yes | yes or no | yes | `biosite_arialabel` |
+| no | yes | yes or no | inferred from `title` |
+
+## Upgrading from 2019
+
+There are some significant changes since the 2019 version. Most notably, you need to take care of the following:
+
+- The content was stored in `README.md`. It is now in `index.md`.
+- Tile color was hard-coded in `builder/template.html`. It is now configured in the metadata in `index.md`.
+
+The simplest way to migrate to the new version is as follows:
+
+1. Make a backup copy of your files, then start from the current commit.
+2. Replace `index.md` with your previous `README.md`.
+3. Set `tilecolor` in `index.md` (see this repository for example).
+4. Redo all customizations you have done to the templates.
