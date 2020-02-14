@@ -2,11 +2,6 @@
 {
 const BibTeX = require('./bibtex.js');
 
-function JsonStringify(obj)
-{
-    return JSON.stringify(obj, null, 0);
-}
-
 function HtmlEncode(text)
 {
     return text.replace(/&/g, '&amp;').
@@ -51,180 +46,6 @@ function DumbPuncts(text)
     text = text.replace(/—|&mdash;/g, '---').replace(/–|&ndash;/g, '--');
     text = text.replace(/ |&nbsp;/g, '~');
     return text;
-}
-
-const HexLowercase = '0123456789abcdef';
-function SafeIdForAscii(id)
-{
-    const result = [];
-    for (let i = 0, j = id.length; i !== j; ++i)
-    {
-        const chr = id.charCodeAt(i);
-        if (chr < 128)
-        {
-            result.push(HexLowercase[chr >>> 4]);
-            result.push(HexLowercase[chr & 15]);
-        }
-        else
-        {
-            result.push('xx');
-        }
-    }
-    return result.join('');
-}
-
-function NoSpaceLower(text)
-{
-    return text.
-        replace(/[ \t\v\f\r\n]+/g, '').
-        replace(/[A-Z]+/,
-            function (x) { return x.toLowerCase(); });
-}
-
-function ResolveFrom(parsed, names)
-{
-    for (const name of names)
-    {
-        const strexpr = parsed.Strings[name];
-        if (strexpr === undefined)
-        {
-            continue;
-        }
-        const strlit = strexpr.Resolve();
-        if (strlit === undefined)
-        {
-            continue;
-        }
-        return strlit.Raw;
-    }
-    return undefined;
-}
-
-const WrapperLangFields =
-[
-    'wrapperlang', 'lang'
-];
-function ResolveWrapperLang(parsed)
-{
-    return ResolveFrom(parsed, WrapperLangFields);
-}
-
-function ResolveAmong(parsed, names, values)
-{
-    for (const name of names)
-    {
-        const strexpr = parsed.Strings[name];
-        if (strexpr === undefined)
-        {
-            continue;
-        }
-        const strlit = strexpr.Resolve();
-        if (strlit === undefined)
-        {
-            continue;
-        }
-        const canonical = NoSpaceLower(strlit.Raw);
-        if (values.indexOf(canonical) >= 0)
-        {
-            return canonical;
-        }
-    }
-    return undefined;
-}
-
-const CitationBracketsFields =
-[
-    'citebrackets', 'citebracket',
-    'brackets', 'bracket'
-];
-const CitationBracketsValues =
-[
-    'brackets', 'bracket', '[]', '[', ']',
-    'parenthesis', 'parentheses', 'paren', '()', '(', ')'
-];
-function ResolveCitationBrackets(parsed, fallback)
-{
-    const result = ResolveAmong(parsed,
-        CitationBracketsFields,
-        CitationBracketsValues) || fallback;
-    return (result === 'brackets' || result === 'bracket' ||
-            result == '[]' || result === '[' || result === ']'
-        ? { delim1: '[', delim2: ']' }
-        : { delim1: '(', delim2: ')' });
-}
-
-const CitationCommaFields = ['citecomma', 'comma'];
-const CitationCommaValues =
-[
-    'comma', ',',
-    'semi-colon', 'semicolon', ';'
-];
-function ResolveCitationComma(parsed, fallback)
-{
-    const result = ResolveAmong(parsed,
-        CitationCommaFields,
-        CitationCommaValues) || fallback;
-    return (result === 'comma' || result === ','
-        ? ',' : ';');
-}
-
-const CitationSpaceFields = ['citespace', 'space'];
-const CitationSpaceValues = ['thin', 'normal', 'none'];
-function ResolveCitationSpace(parsed)
-{
-    return ResolveAmong(parsed,
-        CitationSpaceFields,
-        CitationSpaceValues) || CitationSpaceValues[0];
-}
-
-const BibliographyNicknameFields =
-[
-    'bibliographynickname',
-    'referencesnickname',
-    'referencenickname',
-    'bibnickname',
-    'refnickname',
-    'nickname'
-];
-const BibliographynicknameValues =
-[
-    'cite', 'same',
-    'brackets', 'bracket', '[]', '[', ']',
-    'parenthesis', 'parentheses', 'paren', '()', '(', ')',
-    'period', 'dot', '.'
-];
-function ResolveBibliographyNickname(parsed,
-    allowBrackets, allowParentheses, fallback)
-{
-    const result = ResolveAmong(parsed,
-        BibliographyNicknameFields,
-        BibliographynicknameValues) || fallback;
-    if (result === 'cite' || result === 'same')
-    {
-        if (allowBrackets && allowParentheses)
-        {
-            return ResolveCitationBrackets(parsed);
-        }
-        return (allowBrackets
-            ? { delim1: '[', delim2: ']' }
-            : allowParentheses
-            ? { delim1: '(', delim2: ')' }
-            : { delim1: '', delim2: '.' });
-    }
-    if (allowBrackets &&
-        (result === 'brackets' || result === 'bracket' ||
-        result === '[]' || result === '[' || result === ']'))
-    {
-        return { delim1: '[', delim2: ']' };
-    }
-    if (allowParentheses &&
-        (result === 'parenthesis' || result === 'parenthesis' ||
-        result === 'paren' || result === '()' ||
-        result === '(' || result === ')'))
-    {
-        return { delim1: '(', delim2: ')' };
-    }
-    return { delim1: '', delim2: '.' };
 }
 
 /* CLASS HtmlRenderer extends BibTeX.TeX.SimpleRenderer */
@@ -640,20 +461,10 @@ function RenderPreambleHtml(parsed)
 }
 
 const BlogBibTeX_Utils = {
-    JsonStringify: JsonStringify,
     HtmlEncode: HtmlEncode,
     HtmlDecode: HtmlDecode,
     SmartPuncts: SmartPuncts,
     DumbPuncts: DumbPuncts,
-    SafeIdForAscii: SafeIdForAscii,
-    NoSpaceLower: NoSpaceLower,
-    ResolveFrom: ResolveFrom,
-    ResolveWrapperLang: ResolveWrapperLang,
-    ResolveAmong: ResolveAmong,
-    ResolveCitationBrackets: ResolveCitationBrackets,
-    ResolveCitationComma: ResolveCitationComma,
-    ResolveCitationSpace: ResolveCitationSpace,
-    ResolveBibliographyNickname: ResolveBibliographyNickname,
     TeX2Html: TeX2Html,
     RenderPreambleHtml: RenderPreambleHtml
 };

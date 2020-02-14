@@ -4,22 +4,6 @@
     margin-bottom: 1em;
 }
 
-.gl-bibtex-cite-space-thin
-{
-    font-size: 0.5em !important;
-}
-.gl-bibtex-cite-space-normal
-{
-    font-size: 1em !important;
-}
-.gl-bibtex-cite-space-none
-{
-    font-size: 0 !important;
-    line-height: 0 !important;
-    color: transparent !important;
-    -ms-high-contrast-adjust: none !important;
-}
-
 .gl-bibtex-bst-bio
 {
     margin-top: 1em;
@@ -374,11 +358,6 @@ Use the website base style.
 .gl-bibtex-tex-fbox,
 .gl-bibtex-tex-framebox
 { padding: 1px 2px !important; }
-
-html[gl-theme="dark"] .gl-bibtex-tex-fbox,
-html[gl-theme="dark"] .gl-bibtex-tex-frame,
-html[gl-theme="dark"] .gl-bibtex-tex-framebox
-{ border-color: white !important; }
 
 .gl-bibtex-tex-tiny         { font-size: 0.5479rem; }
 .gl-bibtex-tex-scriptsize   { font-size: 0.7306rem; }
