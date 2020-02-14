@@ -270,37 +270,6 @@ window.GLSetViewportPos = function (element, point)
 /* Handles hash change event. */
 window.GLHashHandler = new (function ()
 {
-    var commentsArea = null;
-    var bringCommentsAreaIntoView = function ()
-    {
-        commentsArea = commentsArea || document.getElementById('comments-area');
-        if (commentsArea != null)
-        {
-            window.GLBringIntoViewNicely(commentsArea);
-        }
-    };
-    /* UNDOCUMENTED AND UNSUPPORTED HACK.
-    ** See comments.js for explanation. */
-    var lastSeenTop = null;
-    var HackDisqusScroll = function (newTop)
-    {
-        commentsArea = commentsArea || document.getElementById('comments-area');
-        if (commentsArea == null)
-        {
-            return;
-        }
-        if (newTop == null)
-        {
-            newTop = lastSeenTop;
-        }
-        if (newTop == null)
-        {
-            bringCommentsAreaIntoView();
-            return;
-        }
-        lastSeenTop = newTop;
-        window.GLSetViewportPos(commentsArea, { top: -newTop, left: 0 });
-    };
     var lastSeenHash = '*';
     var pretendHashChange = false;
     var HandleHashChange = function ()
@@ -313,23 +282,9 @@ window.GLHashHandler = new (function ()
         {
             return;
         }
-        /* In-page elements have priority over Disqus comments. */
         var elem = document.getElementById(target.substring(1));
         if (elem == null)
         {
-            /* If it should be handled by Disqus, bring it into view. */
-            if (window.GLHasDisqus
-                && target.substring(0, 9) == '#comment-')
-            {
-                if (oldHash == target)
-                {
-                    HackDisqusScroll();
-                }
-                else /* HackDisqusScroll is called later. */
-                {
-                    bringCommentsAreaIntoView();
-                }
-            }
             return;
         }
         /* Scroll the element into view after the browser
@@ -354,7 +309,6 @@ window.GLHashHandler = new (function ()
     };
     this.HandleHashChange = HandleHashChange;
     this.PretendHashChange = PretendHashChange;
-    this.HackDisqusScroll = HackDisqusScroll;
 });
 
 window.GLBookmarkHashHandler = new (function ()
@@ -386,7 +340,6 @@ window.GLBookmarkHashHandler = new (function ()
 ** When JavaScript is enabled, we make sure
 ** the targeted element blinks and is placed
 ** close to the center of the viewport.
-** We also have to consider Disqus comment hash.
 */
 window.GLHandleBookmarkJumps = function ()
 {
