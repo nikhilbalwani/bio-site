@@ -147,22 +147,6 @@ window.GLScrollIntoView = function (element)
             document.documentElement.scrollTop += byAmount;
         }
     };
-    window.GLCanHorizontalScroll = function (elem)
-    {
-        cachedBodyWrapper = (cachedBodyWrapper
-            || document.querySelector('.gl-body-wrapper'));
-        return (cachedBodyWrapper != null
-            && cachedBodyWrapper.contains(elem));
-    }
-    window.GLHorizontalScroll = function (byAmount)
-    {
-        cachedBodyWrapper = (cachedBodyWrapper
-            || document.querySelector('.gl-body-wrapper'));
-        if (cachedBodyWrapper != null)
-        {
-            cachedBodyWrapper.scrollLeft += byAmount;
-        }
-    };
 })();
 
 window.GLResolveBringIntoViewRect = function (element)
@@ -192,33 +176,10 @@ window.GLBringIntoViewNicely = function (element)
 {
     var boundingRect = GLResolveBringIntoViewRect(element);
     var nowTop = boundingRect.top;
-    var nowLeft = boundingRect.left;
     var nowBottom = boundingRect.bottom;
-    var nowRight = boundingRect.right;
     var viewHeight = window.innerHeight;
-    var viewWidth = window.innerWidth;
-    /* Fall back to the browser-provided behaviour
-    ** if we cannot scroll this element horizontally.
-    */
-    if (!window.GLCanHorizontalScroll(element))
-    {
-        window.GLScrollIntoViewWithValues(element,
-            nowTop, nowLeft, nowBottom, nowRight,
-            viewHeight, viewWidth);
-        return;
-    }
     nowBottom = Math.min(nowTop + viewHeight, nowBottom);
-    var columnWidthEstimate = undefined;
-    var countColumn = 1;
-    for (columnWidthEstimate = (viewWidth - 96) / ++countColumn;
-        columnWidthEstimate >= 720;
-        columnWidthEstimate = (viewWidth - 96) / ++countColumn)
-        ;
-    columnWidthEstimate = (viewWidth - 96) / --countColumn;
-    nowRight = Math.min(nowLeft + viewWidth, nowRight);
-    /* Specialised GLSetViewportPos */
     window.GLVerticalScroll((nowTop + nowBottom - viewHeight) / 2);
-    window.GLHorizontalScroll((nowLeft + nowRight - viewWidth) / 2);
     return;
 };
 
@@ -250,20 +211,9 @@ window.GLSetViewportPos = function (element, point)
 {
     var boundingRect = element.getBoundingClientRect();
     var nowTop = boundingRect.top;
-    var nowLeft = boundingRect.left;
-    /* The browser deals with overflow of the x/y range.
-    ** In all cases, at most one scrolling could be effective.
-    */
-    var isHorizontal = (window.innerWidth >= 1540);
-    if (!isHorizontal && point.top != null)
+    if (point.top != null)
     {
         window.GLVerticalScroll(nowTop - point.top);
-    }
-    if (isHorizontal
-        && point.left != null
-        && window.GLCanHorizontalScroll(element))
-    {
-        window.GLHorizontalScroll(nowLeft - point.left);
     }
 };
 
