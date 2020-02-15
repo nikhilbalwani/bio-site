@@ -380,32 +380,11 @@ Use the website base style.
 /* Currently, this will always have '?' inside. */
 .gl-bibtex-tex-ref { font-weight: bold; }
 
-.gl-bibtex-tex-neg-thin-space
-{
-    margin-left: -0.2em;
-    display: inline-block;
-}
-
-.gl-bibtex-tex-thin-space
-{
-    font-size: 0.1em;
-    width: 2em;
-    display: inline-block;
-}
-
-.gl-bibtex-tex-thick-space
-{
-    font-size: 0.1em;
-    width: 6em;
-    display: inline-block;
-}
-
-.gl-bibtex-tex-mid-space
-{
-    font-size: 0.1em;
-    width: 4em;
-    display: inline-block;
-}
+/* 1 normal space ~= 0.276em */
+.gl-bibtex-tex-neg-thin-space { margin-right: -0.138em; }
+.gl-bibtex-tex-thin-space { margin-right: -0.138em; }
+.gl-bibtex-tex-thick-space { margin-right: 0.138em; }
+/* .gl-bibtex-tex-mid-space { } */
 
 .gl-bibtex-tex-vspace,
 .gl-bibtex-tex-vspace-star,
