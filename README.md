@@ -35,13 +35,17 @@ On this website, there are a few extensions to BibTeX.
 
 **Info links.** By default, there are `biosite_arxiv`, `biosite_eprint` and `biosite_jcryptol`. (`biosite_jcryptol` is for dual publications whose main publication is a conference.) This is extensible. To add more kinds of info links, see line 109 of [`builder/marked.0.3.6/bibtex-service.js`](builder/marked.0.3.6/bibtex-service.js#L109). More specifically, `field` represents the field name (`biosite_xyz`), `name` represents the textual HTML (link name), `href1html` and `href2html` control URL stitching, `arialabel` provides a readable explanation of the link name (e.g., so that the screen reader knows `arXiv` should be read as `archive`).
 
-**Title pronunciation.** You can use `biosite_arialabel` to specify a title readable by the screen readers. However, the determination of labelling is complicated. In the table below, inline code represents BibTeX fields and "title" (not code) represents the title printed in HTML.
+**Title pronunciation.** You can use `biosite_arialabel` to specify a title readable by the screen readers. The logic for labelling is as follows:
 
-| has `biosite_arialabel`? | `title` has equation? | title is link? | label... |
-| :--: | :--: | :--: | :--: |
-| yes or no | no | no | no label |
-| yes | yes or no | yes | `biosite_arialabel` |
-| no | yes | yes or no | inferred from `title` |
+- Is `aria-label` set in HTML output?
+  - If `title` contains an equation, `aria-label` is set.
+  - If `biosite_url` or `doi` is specified, **and** if `biosite_arialabel` is specified, `aria-label` is set.
+  - Otherwise, `aria-label` is not set. (Even if `biosite_arialabel` is specified, it can be ignored.)
+- If `aria-label` is set, what is the content?
+  - If `biosite_arialabel` is specified, it is used.
+  - Otherwise, the purified form of `title` is used.
+
+It is important to use a correctly encoded (both per BibTeX and per TeX) `title` if you do not set `biosite_arialabel`.
 
 ## Upgrading from 2019
 
