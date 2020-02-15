@@ -193,6 +193,8 @@ obj['KaTeX'] = '<!--[blog][katex]\\@arialabel{{KaTeX}}\\KaTeX[blog]-->';
 /* symbols */
 obj['\\'] = '<br />';
 obj['-'] = '&shy;';
+/* no-op */
+obj['noopsort'] = '';
 return obj;
 })({});
 
@@ -290,6 +292,30 @@ function HtmlRenderer_RenderCtrlSeq(csname, args, target)
         {
             target.Append('', '');
         }
+        return;
+    }
+    if (csname === 'singleletter')
+    {
+        args.StringConcatInto(target);
+        return;
+    }
+    if (csname === 'printfirst')
+    {
+        while (args.Char1.length > 1) { args.Char1.pop(); }
+        while (args.Char2.length > 1) { args.Char2.pop(); }
+        args.StringConcatInto(target);
+        return;
+    }
+    if (csname === 'switchargs')
+    {
+        while (args.Char1.length > 2) { args.Char1.pop(); }
+        while (args.Char2.length > 2) { args.Char2.pop(); }
+        while (args.Char1.length < 2) { args.Char1.push(''); }
+        while (args.Char2.length < 2) { args.Char2.push(''); }
+        let tt = undefined;
+        tt = args.Char1[0]; args.Char1[0] = args.Char1[1]; args.Char1[1] = tt;
+        tt = args.Char2[0]; args.Char2[0] = args.Char2[1]; args.Char2[1] = tt;
+        args.StringConcatInto(target);
         return;
     }
     var dcrt = CtrlSeqDiacritics[csname];

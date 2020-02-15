@@ -2051,7 +2051,15 @@ var ObjectModel_PersonNameFormat = (function () {
                 result.push(component);
             }
         }
-        return result.join('');
+        return result.join('').replace(/(\\+relax)?(~+)/g, function (_, relax, tie) {
+            if (relax) {
+                if (relax.length % 2 === 0 && tie.length === 1) {
+                    return relax + ' ';
+                }
+                return relax + '~';
+            }
+            return '~';
+        });
     };
     ObjectModel_PersonNameFormat.ERROR_SUCCESS = 0;
     ObjectModel_PersonNameFormat.ERROR_UNCLOSED_BRACE = 1;
@@ -2796,6 +2804,9 @@ var TeX_SimpleRenderer = (function () {
         return this._MutablePrivates.Render();
     };
     TeX_SimpleRenderer.CtrlSeqType = function (csname) {
+        if (TeX_SimpleRenderer.CtrlSeq2Arg.indexOf(csname) >= 0) {
+            return 2;
+        }
         if (TeX_SimpleRenderer.CtrlSeq1Arg.indexOf(csname) >= 0) {
             return 1;
         }
@@ -2832,6 +2843,7 @@ var TeX_SimpleRenderer = (function () {
         return Number.NaN;
     };
     TeX_SimpleRenderer.StackFrame = TeX_SimpleRenderer_StackFrame;
+    TeX_SimpleRenderer.CtrlSeq2Arg = ['printfirst', 'switchargs'];
     TeX_SimpleRenderer.CtrlSeq1Arg = [
         '`', "'", '^', '"', '~', '=', '.',
         'u', 'v', 'H', 't', 'c', 'd', 'b', 'r',
@@ -2845,7 +2857,8 @@ var TeX_SimpleRenderer = (function () {
         'label', 'ref', 'cite',
         '@',
         'uppercase', 'lowercase',
-        'etalchar'
+        'etalchar',
+        'noopsort', 'singleletter'
     ];
     TeX_SimpleRenderer.CtrlSeq0Args = [
         'relax',
@@ -2944,6 +2957,14 @@ var TeX_TextRendererPrivates = (function (_super) {
             target.Append('', txt);
             return;
         }
+        if (csname === 'printfirst') {
+            this.RenderCtrlSeq_printfirst(args, target);
+            return;
+        }
+        if (csname === 'switchargs') {
+            this.RenderCtrlSeq_switchargs(args, target);
+            return;
+        }
         args.StringConcatInto(target);
     };
     TeX_TextRendererPrivates.prototype.RenderAll = function (content) {
@@ -2966,6 +2987,37 @@ var TeX_TextRendererPrivates = (function (_super) {
     TeX_TextRendererPrivates.prototype.RenderText = function (text, target) {
         text = TeX_TextRendererPrivates.SmartPuncts(text);
         target.Append(text.substr(0, 1), text.substr(1));
+    };
+    TeX_TextRendererPrivates.prototype.RenderCtrlSeq_printfirst = function (args, target) {
+        while (args.Char1.length > 1) {
+            args.Char1.pop();
+        }
+        while (args.Char2.length > 1) {
+            args.Char2.pop();
+        }
+        args.StringConcatInto(target);
+    };
+    TeX_TextRendererPrivates.prototype.RenderCtrlSeq_switchargs = function (args, target) {
+        while (args.Char1.length > 2) {
+            args.Char1.pop();
+        }
+        while (args.Char1.length < 2) {
+            args.Char1.push('');
+        }
+        while (args.Char2.length > 2) {
+            args.Char2.pop();
+        }
+        while (args.Char2.length < 2) {
+            args.Char2.push('');
+        }
+        var tmp = undefined;
+        tmp = args.Char1[0];
+        args.Char1[0] = args.Char1[1];
+        args.Char1[1] = tmp;
+        tmp = args.Char2[0];
+        args.Char2[0] = args.Char2[1];
+        args.Char2[1] = tmp;
+        args.StringConcatInto(target);
     };
     TeX_TextRendererPrivates.CtrlSeqDiacritics = (function (obj) {
         obj['`'] = '̀';
@@ -3052,6 +3104,7 @@ var TeX_TextRendererPrivates = (function (_super) {
         obj['L'] = 'Ł';
         obj['O'] = 'Ø';
         obj['OE'] = 'Œ';
+        obj['noopsort'] = '';
         return Helper.FreezeObject(obj);
     })(Helper.NewEmptyObject());
     return TeX_TextRendererPrivates;
@@ -4216,7 +4269,7 @@ var Styles_StandardStyle = (function () {
         return result;
     };
     Styles_StandardStyle.prototype.phdthesis = function (entry) {
-        return this.that.thesis(entry, Styles_StandardStyleHelper.MastersThesisType);
+        return this.that.thesis(entry, Styles_StandardStyleHelper.PhDThesisType);
     };
     Styles_StandardStyle.prototype.proceedings = function (entry) {
         var editors = this.that.format_editors(entry);

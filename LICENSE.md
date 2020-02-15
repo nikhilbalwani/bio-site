@@ -11,7 +11,7 @@
 | `/404.html` | ARR |
 | `/builder/katex.0.11.1` | MIT per [KaTeX](https://github.com/KaTeX/KaTeX/tree/v0.11.1) |
 | `/builder/marked.0.3.6/marked.js` | MIT per [marked](https://github.com/markedjs/marked/tree/v0.3.6) |
-| `/builder/marked.0.3.6/bibtex.js` | MIT per [BibTeX-TS](https://github.com/GeeLaw/bibtex-ts/tree/68ec5adbea695ff4257461987173a80ddb44a6ca) |
+| `/builder/marked.0.3.6/bibtex.js` | MIT per [BibTeX-TS](https://github.com/GeeLaw/bibtex-ts/tree/c79286ee691b63fa61d04f1ed949d0261ca0f698) |
 | other | MIT |
 
 ## MIT License
