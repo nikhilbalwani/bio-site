@@ -987,16 +987,6 @@ const linkHandler = function(href, title, text) {
   if (title) {
     out += ' title="' + title + '"';
   }
-  /* This is disabled for CV site. */
-  if (false && targetBlank)
-  {
-    out += ' target="_blank"';
-  }
-  /* Currently this is not enabled. */
-  if (false && relNofollow)
-  {
-    out += ' rel="nofollow"';
-  }
   out += '>' + text + '</a>';
   return out;
 };
@@ -1006,14 +996,8 @@ return linkHandler;
 })(/^blank:/i, '', /^self:(.*)$/i, '',
   /^http:|^https:|^ftp:|^ftps:|^file:|^\/\//i,
   /^follow:(.*?)$/i, '', /^nofollow:/i, '',
-  /* Any subdomain of geelaw.blog geelaw.bio is followed.
-  ** Link to github.com/GeeLaw is followed.
-  ** Same-page query/hash URL is followed.
-  ** /, /?, /# are followed.
-  ** /whatever is followed, as long as it's not //whatever.
-  ** URL relative to the page is followed.
-  */
-  /^(http(s)?:)?\/\/(.*\.)?geelaw\.(blog|bio)(\.?)(\/|$)|^(http(s)?:)?\/\/(.*\.)?github\.com\/GeeLaw(\/|$)|^(\?|#)|^\/[^\/]|^[^:\/]+($|\/|\?|#)/i);
+  /* not used */
+  /^$/i);
 
 Renderer.prototype.image = function(href, title, text) {
   var out = '<img src="' + href + '" alt="' + text + '"';
