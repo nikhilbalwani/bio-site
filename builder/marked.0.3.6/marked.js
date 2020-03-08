@@ -913,77 +913,43 @@ Renderer.prototype.del = function(text) {
   return '<del>' + text + '</del>';
 };
 
-Renderer.prototype.link = (function (rgxBlank, rplBlank,
-  rgxNoBlank, rplNoBlank,
-  rgxBlankDef,
-  rgxFollow, rplFollow,
-  rgxNoFollow, rplNoFollow,
-  rgxFollowDef)
+Renderer.prototype.link = (function (noopenerTest)
 {
-var targetBlank, relNofollow, strippedHref;
+const resolved = {
+  url: undefined,
+  target: undefined,
+  nofollow: undefined,
+  noopener: undefined
+};
 const testers = [
-  function ()
-  {
-    if (targetBlank != null)
-      return false;
-    if (rgxBlank.exec(strippedHref))
-    {
-      strippedHref = rgxBlank.replace(strippedHref, rplBlank);
-      targetBlank = true;
-    }
-  },
-  function ()
-  {
-    if (targetBlank != null)
-      return false;
-    if (rgxNoBlank.exec(strippedHref))
-    {
-      strippedHref = rgxNoBlank.replace(strippedHref, rplNoBlank);
-      targetBlank = false;
-    }
-  },
-  function ()
-  {
-    if (relNofollow != null)
-      return false;
-    if (rgxFollow.exec(strippedHref))
-    {
-      strippedHref = rgxFollow.replace(strippedHref, rplFollow);
-      relNofollow = false;
-    }
-  },
-  function ()
-  {
-    if (relNofollow != null)
-      return false;
-    if (rgxNoFollow.exec(strippedHref))
-    {
-      strippedHref = rgxNoFollow.replace(strippedHref, rplNoFollow);
-      relNofollow = true;
-    }
-  }
+  ['blank:', 'target', 'blank'],
+  ['self:', 'target', 'self'],
+  ['nofollow:', 'nofollow', 'nofollow'],
+  ['follow:', 'nofollow', 'follow']
 ];
-const resolveText = function (href)
+const resolveHref = function (href)
 {
-  var i;
-  targetBlank = null;
-  relNofollow = null;
-  strippedHref = href;
-  while (true)
+  resolved.target = undefined;
+  resolved.nofollow = undefined;
+  for (var i = 0; i != testers.length; ++i)
   {
-    for (i = 0; i != testers.length; ++i)
-      if (testers[i]())
-        break;
-    if (i == testers.length)
-      break;
+    if (href.startsWith(testers[i][0]))
+    {
+      href = href.substring(testers[i][0].length);
+      resolved[testers[i][1]] = testers[i][2];
+      i = -1;
+    }
   }
-  targetBlank = targetBlank || (rgxBlankDef.exec(strippedHref) != null);
-  relNofollow = relNofollow || (rgxFollowDef.exec(strippedHref) == null);
+  resolved.url = href;
+  resolved.target = resolved.target ||
+    (/^(http|https|ftp|sftp|file):|^\/\//i.test(href) ? 'blank' : 'self');
+  resolved.nofollow = resolved.nofollow || 'follow';
+  resolved.noopener = (resolved.target === 'blank') && noopenerTest.test(href);
 };
 
 const linkHandler = function(href, title, text) {
-  resolveText(href);
-  var out = '<a href="' + strippedHref + '"';
+  resolveHref(href);
+  var out = '<a href="' + resolved.url + '"';
   if (title) {
     out += ' title="' + title + '"';
   }
@@ -993,11 +959,7 @@ const linkHandler = function(href, title, text) {
 
 return linkHandler;
 
-})(/^blank:/i, '', /^self:(.*)$/i, '',
-  /^http:|^https:|^ftp:|^ftps:|^file:|^\/\//i,
-  /^follow:(.*?)$/i, '', /^nofollow:/i, '',
-  /* not used */
-  /^$/i);
+})(/^(https?:)?\/\//i);
 
 Renderer.prototype.image = function(href, title, text) {
   var out = '<img src="' + href + '" alt="' + text + '"';

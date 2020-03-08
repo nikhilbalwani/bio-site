@@ -423,8 +423,10 @@ function HtmlRenderer_RenderCtrlSeq(csname, args, target)
     if (csname === 'url')
     {
         const url = DumbPuncts(ch1 + ch2);
-        target.Append('',
-            '<a class="gl-bibtex-tex-url" target="_blank" href="' +
+        const noopener = /^(https?:)?\/\//i.test(url);
+        target.Append('', (noopener
+            ? '<a class="gl-bibtex-tex-url" target="_blank" rel="noopener" href="'
+            : '<a class="gl-bibtex-tex-url" target="_blank" href="') +
             url + '">' + url + '</a>');
         return;
     }
@@ -433,8 +435,10 @@ function HtmlRenderer_RenderCtrlSeq(csname, args, target)
         const url = DumbPuncts(
             (args.Char1[1] || '') +
             (args.Char2[1] || ''));
-        target.Append(
-            '<a class="gl-bibtex-tex-url" target="_blank" href="' +
+        const noopener = /^(https?:)?\/\//i.test(url);
+        target.Append((noopener
+            ? '<a class="gl-bibtex-tex-url" target="_blank" rel="noopener" href="'
+            : '<a class="gl-bibtex-tex-url" target="_blank" href="') +
             url + '">' + ch1, ch2 + '</a>');
         return;
     }
