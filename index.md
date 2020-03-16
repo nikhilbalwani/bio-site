@@ -80,6 +80,17 @@ see "builder/marked.0.3.6/bibtex-service.js" line 85.
 
 ```blog-bib
 
+@misc{EC:LinLuo20,
+  author  = {Huijia Lin and Ji Luo},
+  title   = {Compact Adaptively Secure {ABE} from {$k$}-{L}in:
+Beyond $\mathsf{NC}^1$ and towards $\mathsf{NL}$},
+  year    = 2020,
+
+  biosite_arialabel = {Compact Adaptively Secure A-B-E from k-Lin: Beyond NC1 and towards NL},
+  biosite_venue = {To appear in Eurocrypt 2020},
+  biosite_eprint = {2020/318},
+}
+
 @article{JBHI:ZLLCX19,
   author  = {Shengyu Zhao and
              Tingfung Lau and
@@ -94,23 +105,6 @@ see "builder/marked.0.3.6/bibtex-service.js" line 85.
 
   biosite_venue = {IEEE J-HBI},
   biosite_arxiv = {1902.05020},
-}
-
-```
-
-## Manuscripts
-
-```blog-bib
-
-@unpublished{EC:LinLuo20,
-  author  = {Huijia Lin and Ji Luo},
-  title   = {Compact Adaptively Secure {ABE} from {$k$}-{L}in:
-Beyond {\(\mathsf{\bgroup\bgroup}}{NC}{\egroup{\egroup}^1\)}
-and towards {\(\mathsf{\bgroup\bgroup}}{NL}{\egroup{\egroup}\)}},
-  year    = 2020,
-
-  biosite_arialabel = {Compact Adaptively Secure A-B-E from k-Lin: Beyond NC1 and towards NL},
-  biosite_venue = {To appear in Eurocrypt 2020},
 }
 
 ```
